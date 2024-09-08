@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useForm, Link } from "@inertiajs/react";
 import { ModeToggle } from "../ModeToggle";
-import { BreadcrumbWithCustomSeparator } from "../Breadcrumb/BreadcrumbLink";
+import { BreadcrumbWithCustomSeparator } from "../Breadcrumb/BreadcrumbLinks";
 
 const Header = () => {
   const { post } = useForm({});

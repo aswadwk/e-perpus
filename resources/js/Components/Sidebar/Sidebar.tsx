@@ -75,16 +75,44 @@ export default function Sidebar({
 
 const SIDEBAR_ITEMS = [
   {
-    href: "/",
+    href: "/home",
     icon: <House className="w-4 h-4" />,
     label: "Home",
     requiredRoles: ["admin finance", "user"],
     darkMode: false,
   },
   {
-    href: "/users",
+    href: "/members",
     icon: <Users className="w-4 h-4" />,
-    label: "Users",
+    label: "Members",
+    requiredRoles: ["admin finance", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/publishers",
+    icon: <Users className="w-4 h-4" />,
+    label: "Publishers",
+    requiredRoles: ["admin finance", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/borrowers",
+    icon: <Users className="w-4 h-4" />,
+    label: "Borrowers",
+    requiredRoles: ["admin finance", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/books",
+    icon: <Users className="w-4 h-4" />,
+    label: "Books",
+    requiredRoles: ["admin finance", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/reports",
+    icon: <Users className="w-4 h-4" />,
+    label: "Reports",
     requiredRoles: ["admin finance", "user"],
     darkMode: false,
   },
