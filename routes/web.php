@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\MemberController;
+use App\Http\Controllers\Web\PublisherController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
@@ -34,4 +35,15 @@ Route::controller(MemberController::class)
         Route::get('/members/{id}/edit', 'edit')->name('web.members.edit');
         Route::put('/members/{id}/update', 'update')->name('web.members.update');
         Route::delete('/members/{id}/delete', 'destroy')->name('web.members.destroy');
+    });
+
+Route::controller(PublisherController::class)
+    ->middleware("auth:web")
+    ->group(function () {
+        Route::get('/publishers', 'index')->name('web.publishers.index');
+        Route::get('/publishers/create', 'create')->name('web.publishers.create');
+        Route::post('/publishers/store', 'store')->name('web.publishers.store');
+        Route::get('/publishers/{id}/edit', 'edit')->name('web.publishers.edit');
+        Route::put('/publishers/{id}/update', 'update')->name('web.publishers.update');
+        Route::delete('/publishers/{id}/delete', 'destroy')->name('web.publishers.destroy');
     });
