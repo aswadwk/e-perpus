@@ -10,21 +10,32 @@ import {
   Users,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
+import { ReactNode } from "react";
 
 interface SidebarProps {
   sidebarExpanded: boolean;
   setSidebarExpanded: (arg: boolean) => void;
 }
 
+function checkRole(role: string, menus: SidebarItem[]) {
+  return menus.filter((menu) => {
+    return menu.requiredRoles.includes(role);
+  });
+}
+
 export default function Sidebar({
   sidebarExpanded,
   setSidebarExpanded,
 }: Readonly<SidebarProps>) {
-  const { url } = usePage();
+  const { url, props }: any = usePage();
+
+  console.log(props);
 
   const isActive = (path: string) => {
-    return url.startsWith(path);
+    return url.replace("/admin", "").startsWith(path.replace("/admin", ""));
   };
+
+  console.log(checkRole("admin", SIDEBAR_ITEMS));
 
   return (
     <aside
@@ -48,7 +59,7 @@ export default function Sidebar({
       </div>
 
       <nav className="flex flex-col w-full px-2 space-y-1">
-        {SIDEBAR_ITEMS.map((item) => {
+        {checkRole(props?.auth?.role, SIDEBAR_ITEMS).map((item) => {
           return (
             <SidebarItem
               key={item.href}
@@ -74,47 +85,55 @@ export default function Sidebar({
   );
 }
 
+type SidebarItem = {
+  href: string;
+  icon: JSX.Element;
+  label: string;
+  requiredRoles: string[];
+  darkMode: boolean;
+};
+
 const SIDEBAR_ITEMS = [
   {
-    href: "/home",
+    href: "/admin/home",
     icon: <House className="w-4 h-4" />,
     label: "Home",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin", "user"],
     darkMode: false,
   },
   {
-    href: "/members",
+    href: "/admin/members",
     icon: <Users className="w-4 h-4" />,
     label: "Members",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin"],
     darkMode: false,
   },
   {
-    href: "/publishers",
+    href: "/admin/publishers",
     icon: <Users className="w-4 h-4" />,
     label: "Publishers",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin"],
     darkMode: false,
   },
   {
-    href: "/borrowers",
+    href: "/admin/borrowers",
     icon: <Users className="w-4 h-4" />,
     label: "Borrowers",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin"],
     darkMode: false,
   },
   {
-    href: "/books",
+    href: "/admin/books",
     icon: <Book className="w-4 h-4" />,
     label: "Books",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin", "user"],
     darkMode: false,
   },
   {
-    href: "/reports",
+    href: "/admin/reports",
     icon: <Users className="w-4 h-4" />,
     label: "Reports",
-    requiredRoles: ["admin finance", "user"],
+    requiredRoles: ["admin"],
     darkMode: false,
   },
 ];
