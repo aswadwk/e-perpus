@@ -12,4 +12,14 @@ class Book extends Model
     use HasFactory, SoftDeletes, Timestamp;
 
     protected $fillable = ['isbn', 'title', 'author', 'publisher_id', 'category_id', 'stock'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function publisher()
+    {
+        return $this->belongsTo(Publisher::class);
+    }
 }

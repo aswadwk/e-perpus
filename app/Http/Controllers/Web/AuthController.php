@@ -27,6 +27,11 @@ class AuthController extends Controller
         if (auth('web')->attempt($credentials)) {
             $request->session()->regenerate();
 
+            // check if user is admin
+            if (auth('web')->user()->role === 'admin') {
+                return redirect()->intended('/admin/home');
+            }
+
             return redirect()->intended('/home');
         }
 
