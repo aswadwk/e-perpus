@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('publishers', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 255)->unique();
+            $table->string('code');
             $table->string('name');
             $table->boolean('is_verified')->default(true);
 
