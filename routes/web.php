@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\BookController;
 use App\Http\Controllers\Web\DashboardController;
+use App\Http\Controllers\Web\HistoryController;
 use App\Http\Controllers\Web\MemberController;
 use App\Http\Controllers\Web\PublisherController;
 use Illuminate\Support\Facades\Route;
@@ -52,4 +54,18 @@ Route::controller(PublisherController::class)
         Route::get('/admin/publishers/{id}/edit', 'edit')->name('web.publishers.edit');
         Route::put('/admin/publishers/{id}/update', 'update')->name('web.publishers.update');
         Route::delete('/admin/publishers/{id}/delete', 'destroy')->name('web.publishers.destroy');
+    });
+
+
+Route::controller(BookController::class)
+    ->middleware("auth:web")
+    ->group(function () {
+        Route::get('/books', 'index')->name('web.books.index');
+        Route::post('books/{id}/borrow', 'borrow')->name('web.books.borrow');
+    });
+
+Route::controller(HistoryController::class)
+    ->middleware("auth:web")
+    ->group(function () {
+        Route::get('/histories', 'index')->name('web.histories.index');
     });

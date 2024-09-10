@@ -29,13 +29,9 @@ export default function Sidebar({
 }: Readonly<SidebarProps>) {
   const { url, props }: any = usePage();
 
-  console.log(props);
-
   const isActive = (path: string) => {
     return url.replace("/admin", "").startsWith(path.replace("/admin", ""));
   };
-
-  console.log(checkRole("admin", SIDEBAR_ITEMS));
 
   return (
     <aside
@@ -123,9 +119,16 @@ const SIDEBAR_ITEMS = [
     darkMode: false,
   },
   {
-    href: "/admin/books",
+    href: "/books",
     icon: <Book className="w-4 h-4" />,
     label: "Books",
+    requiredRoles: ["admin", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/histories",
+    icon: <Book className="w-4 h-4" />,
+    label: "Histories",
     requiredRoles: ["admin", "user"],
     darkMode: false,
   },
