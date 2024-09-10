@@ -20,14 +20,14 @@ return new class extends Migration
             $table->foreignId('publisher_id')->constrained()
                 ->onDelete('cascade');
 
-            $table->string('isbn')->unique();
+            $table->string('isbn', 255)->unique();
             $table->string('cover')->nullable();
             $table->string('year_published');
             $table->integer('stock')->default(0);
             $table->integer('price')->default(0);
             $table->text('description')->nullable();
             $table->string('status')->default('available'); // available, unavailable
-            $table->string('slug')->unique();
+            $table->string('slug', 255)->unique();
             $table->integer('views')->default(0);
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);

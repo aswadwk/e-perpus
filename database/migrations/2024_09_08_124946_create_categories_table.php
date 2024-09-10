@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code', 255)->unique();
             $table->string('name');
 
             $table->softDeletes();
