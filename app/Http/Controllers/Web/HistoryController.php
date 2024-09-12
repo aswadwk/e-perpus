@@ -13,7 +13,7 @@ class HistoryController extends Controller
         return inertia('Histories/Histories', [
             'histories' => Borrow::with(['book', 'user'])
                 ->where('user_id', auth('web')->user()->id)
-                ->orderBy('id', 'desc')->paginate(10),
+                ->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 }

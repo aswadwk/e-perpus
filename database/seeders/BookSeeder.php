@@ -13,48 +13,7 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        // $categories = [
-        //     [
-        //         'code' => 'KT-001',
-        //         'name' => 'Novel'
-        //     ],
-        //     [
-        //         'code' => 'KT-002',
-        //         'name' => 'Cergam'
-        //     ],
-        //     [
-        //         'code' => 'KT-003',
-        //         'name' => 'Ensiklopedi'
-        //     ],
-        //     [
-        //         'code' => 'KT-004',
-        //         'name' => 'Biografi'
-        //     ],
-        //     [
-        //         'code' => 'KT-005',
-        //         'name' => 'Catatan Harian'
-        //     ],
-        //     [
-        //         'code' => 'KT-006',
-        //         'name' => 'Karya Ilmiah'
-        //     ],
-        //     [
-        //         'code' => 'KT-007',
-        //         'name' => 'Tafsir'
-        //     ],
-        //     [
-        //         'code' => 'KT-008',
-        //         'name' => 'Panduan (how to)'
-        //     ],
-        //     [
-        //         'code' => 'KT-009',
-        //         'name' => 'Majalah'
-        //     ],
-        //     [
-        //         'code' => 'KT-010',
-        //         'name' => 'Antologi'
-        //     ],
-        // ];
+        $faker = \Faker\Factory::create();
 
         $books = [
             [
@@ -66,7 +25,8 @@ class BookSeeder extends Seeder
                 'price' => 100000,
                 'isbn' => '978-979-403-757-2',
                 'year_published' => '1980',
-                'slug' => 'bumi-manusia'
+                'slug' => 'bumi-manusia',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Laskar Pelangi',
@@ -77,7 +37,8 @@ class BookSeeder extends Seeder
                 'price' => 100000,
                 'isbn' => '978-979-3069-50-5',
                 'year_published' => '2005',
-                'slug' => 'laskar-pelangi'
+                'slug' => 'laskar-pelangi',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Dilan 1990',
@@ -88,7 +49,8 @@ class BookSeeder extends Seeder
                 'price' => 100000,
                 'isbn' => '978-602-424-152-4',
                 'year_published' => '2014',
-                'slug' => 'dilan-1990'
+                'slug' => 'dilan-1990',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Doraemon',
@@ -99,7 +61,8 @@ class BookSeeder extends Seeder
                 'price' => 100000,
                 'isbn' => '978-4-09-143134-3',
                 'year_published' => '1969',
-                'slug' => 'doraemon'
+                'slug' => 'doraemon',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'One Piece',
@@ -110,7 +73,8 @@ class BookSeeder extends Seeder
                 'price' => 100000,
                 'isbn' => '978-4-08-872509-3',
                 'year_published' => '1997',
-                'slug' => 'one-piece'
+                'slug' => 'one-piece',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Naruto',
@@ -122,6 +86,7 @@ class BookSeeder extends Seeder
                 'isbn' => '978-4-08-873621-1',
                 'year_published' => '1999',
                 'slug' => 'naruto',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Ensiklopedi Indonesia',
@@ -133,6 +98,7 @@ class BookSeeder extends Seeder
                 'isbn' => '978-979-403-757-0',
                 'year_published' => '2000',
                 'slug' => 'ensiklopedi-indonesia',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Ensiklopedi Islam',
@@ -144,6 +110,7 @@ class BookSeeder extends Seeder
                 'isbn' => '978-979-403-757-3',
                 'year_published' => '2020',
                 'slug' => 'ensiklopedi-islam',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ],
             [
                 'title' => 'Biografi B.J. Habibie',
@@ -155,6 +122,7 @@ class BookSeeder extends Seeder
                 'isbn' => '978-979-403-757-4',
                 'year_published' => '2020',
                 'slug' => 'biografi-bj-habibie',
+                'cover' => $faker->imageUrl(640, 480, 'books'),
             ]
         ];
 

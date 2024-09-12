@@ -3,6 +3,7 @@ import DatePickerDemo from "@/Components/DatePicker/DatePicker";
 import DatePickerWithRange from "@/Components/DatePicker/DateRangePicker";
 import InputCheckBox from "@/Components/Input/InputCheckBox";
 import InputCustom from "@/Components/Input/InputCustom";
+import BookLayout from "@/Components/Layout/BookLayout";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
@@ -13,6 +14,7 @@ import { Calendar } from "@/Components/ui/calendar";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -158,195 +160,68 @@ const Histories = ({ histories }: any) => {
   }
 
   return (
-    <DefaultLayout>
+    <BookLayout>
       <Head title="Publisher" />
 
-      <BorrowBook
-        isOpen={isOpen.borrowBook}
-        handleClose={() => {
-          setIsOpen({
-            ...isOpen,
-            borrowBook: false,
-          });
-        }}
-        width="w-[600px] sm:w-[840px]"
-      >
-        <FormAddAdminUser book={bookTemp} onSubmit={handleBorrowBook} />
-      </BorrowBook>
-
-      <Card>
+      <Card className="w-full mx-auto">
         <CardHeader>
-          <CardTitle>Publishers</CardTitle>
+          <CardTitle>Book Borrowing History</CardTitle>
+          <CardDescription>
+            A list of recent book loans and their current status.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Tabs
-                className="hidden sm:flex"
-                defaultValue="all"
-                value={filters.subscription}
-                onValueChange={(value) => {
-                  setFilters({
-                    ...filters,
-                    subscription: value,
-                  });
-                }}
-              >
-                <TabsList>
-                  <TabsTrigger value="">All</TabsTrigger>
-                  <TabsTrigger value="free">Free</TabsTrigger>
-                  <TabsTrigger value="premium">Premium</TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <div className="flex items-center justify-center">
-                <InputCheckBox
-                  id="with_trashed"
-                  onChange={(value) => {
-                    setFilters({
-                      ...filters,
-                      with_trashed: value,
-                    });
-                  }}
-                  error={""}
-                  label="With Trashed"
-                  value={filters.with_trashed}
-                  placeholder="Active"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end space-x-2">
-              {hasFilter() && (
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setFilters({
-                      ...filters,
-                      search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
-                      per_page: "",
-                      with_trashed: false,
-                    });
-                  }}
-                >
-                  Clear Filter
-                </Button>
-              )}
-              <Input
-                placeholder="Search "
-                onChange={(e) => {
-                  setFilters({
-                    ...filters,
-                    search: e.target.value,
-                  });
-                }}
-                className="w-[150px] lg:w-[250px]"
-                value={filters.search}
-              />
-
-              <Link href="/publishers/create">
-                <Button>
-                  <Plus />
-                  Add Books
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <div className="mt-4 overflow-x-auto border rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Author</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>ISBN</TableHead>
-                  <TableHead>Stock</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead className="text-center">Action</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Book Title</TableHead>
+                <TableHead>Author</TableHead>
+                <TableHead>Borrow Date</TableHead>
+                <TableHead>Return Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {histories.data?.map((item: any) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">
+                    {item.book.title}
+                  </TableCell>
+                  <TableCell>{item.book.author}</TableCell>
+                  <TableCell>
+                    {dateHumanize(item.created_at)}
+                    <br />
+                    <span className="text-xs text-gray-500">
+                      {toYearMonthDayHourMinute(item.created_at)}
+                    </span>
+                  </TableCell>
+                  <TableCell>{item.return_date}</TableCell>
+                  <TableCell>{item.status}</TableCell>
+                  <TableCell>
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button>
+                          <Edit size={16} />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <Button>
+                          <Eye size={16} />
+                        </Button>
+                        <Button>
+                          <Trash size={16} />
+                        </Button>
+                      </PopoverContent>
+                    </Popover>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {histories?.data?.map((book: any) => (
-                  <TableRow key={book.id}>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <div>
-                          {book?.id}
-                          {book?.title ?? "Unknown"}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{book.author}</TableCell>
-                    <TableCell>
-                      {book?.category?.name}
-                      <br />
-                      <span className="text-xs text-muted-foreground">
-                        {book?.category?.code}
-                      </span>
-                    </TableCell>
-                    <TableCell>{book.isbn}</TableCell>
-                    <TableCell>{book.stock}</TableCell>
-                    <TableCell>{book.status}</TableCell>
-                    <TableCell className="text-nowrap">
-                      {dateHumanize(book.created_at)}
-                      <br />
-                      <span className="text-xs text-muted-foreground">
-                        {toYearMonthDayHourMinute(book.created_at)}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-center gap-2">
-                        <Button variant="ghost">
-                          <Link href={route("web.publishers.edit", book.id)}>
-                            <Edit height={18} />
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            deletePublisher(book.id);
-                          }}
-                        >
-                          <Trash height={18} />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            setBookTemp(book);
-                            setIsOpen({
-                              ...isOpen,
-                              borrowBook: true,
-                            });
-                          }}
-                        >
-                          Borrow
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
-        <CardFooter>
-          <div className="flex items-center justify-between w-full">
-            <PaginateInfo
-              from={histories.from}
-              to={histories.to}
-              total={histories.total}
-            />
-            <div>
-              <PaginationDemo links={histories.links} />
-            </div>
-          </div>
-        </CardFooter>
       </Card>
-    </DefaultLayout>
+    </BookLayout>
   );
 };
 

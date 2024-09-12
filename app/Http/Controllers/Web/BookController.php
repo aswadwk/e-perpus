@@ -20,6 +20,8 @@ class BookController extends Controller
 
     public function borrow(Request $request, $id)
     {
+
+
         $request->validate([
             'return_date' => ['required', 'date', 'after:today'],
             'fine' => ['required', 'boolean'],
@@ -32,9 +34,6 @@ class BookController extends Controller
             try {
                 DB::beginTransaction();
 
-                $book->stock -= 1;
-                $book->save();
-
                 Borrow::create([
                     'book_id' => $book->id,
                     'user_id' => auth('web')->user()->id,
@@ -42,24 +41,19 @@ class BookController extends Controller
                     'return_date' => $request->return_date,
                     'notes' => $request->notes ?? null,
                     'fine' => $request->fine ?? 0,
+                    'status' => 'pending',
                 ]);
 
                 DB::commit();
 
-                return response()->json([
-                    'message' => 'Book borrowed successfully',
-                ]);
+                return redirect()->route('web.books.index');
             } catch (\Throwable $th) {
                 DB::rollBack();
 
-                return response()->json([
-                    'message' => $th->getMessage(),
-                ], 200);
+                throw $th;
             }
         }
 
-        return response()->json([
-            'message' => 'Book out of stock',
-        ], 200);
+        return redirect()->back()->with('error', 'Stock out of book');
     }
 }

@@ -1,454 +1,88 @@
-import AvatarCustom from "@/Components/Avatar/Avatar";
-import DatePickerDemo from "@/Components/DatePicker/DatePicker";
-import DatePickerWithRange from "@/Components/DatePicker/DateRangePicker";
-import InputCheckBox from "@/Components/Input/InputCheckBox";
-import InputCustom from "@/Components/Input/InputCustom";
-import DefaultLayout from "@/Components/Layout/DefaultLayout";
-import PaginationDemo, {
-  PaginateInfo,
-} from "@/Components/Paginate/PaginateDemo";
-import Status from "@/Components/Status";
-import { Button } from "@/Components/ui/button";
-import { Calendar } from "@/Components/ui/calendar";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/Components/ui/card";
-import { Input } from "@/Components/ui/input";
-import { Label } from "@/Components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/Components/ui/popover";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/Components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/Components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { cn } from "@/Lib/utils";
-import {
-  dateHumanize,
-  removeEmptyValues,
-  toYearMonthDay,
-  toYearMonthDayHourMinute,
-} from "@/Shared/utils";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import axios from "axios";
-import { format } from "date-fns";
-import { debounce } from "lodash";
-import {
-  CalendarIcon,
-  DollarSignIcon,
-  Edit,
-  Eye,
-  Plus,
-  Trash,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import AlbumArtwork from "@/Components/Layout/Book";
+import BookLayout from "@/Components/Layout/BookLayout";
+import { useModal } from "@/Components/Login/LoginContext";
+import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
+import { Separator } from "@/Components/ui/separator";
+import { Tabs, TabsContent } from "@/Components/ui/tabs";
+import { Head } from "@inertiajs/react";
+import { Button } from "react-day-picker";
 
-const User = ({ books }: any) => {
-  const [filters, setFilters] = useState<any>({
-    per_page: 10,
-    start_date: "",
-    end_date: "",
-    search: "",
-    subscription: "",
-    with_trashed: false,
-  });
-
-  const [isOpen, setIsOpen] = useState({
-    borrowBook: false,
-  });
-
-  const [bookTemp, setBookTemp] = useState<any>({});
-
-  const { delete: destroy } = useForm({});
-
-  const firstRender = useRef(true);
-
-  const debouncedSearch = useRef(
-    debounce((searchFilter: any) => {
-      let newFilter = removeEmptyValues({
-        ...searchFilter,
-        start_date: toYearMonthDay(searchFilter.start_date, ""),
-        end_date: toYearMonthDay(searchFilter.end_date, ""),
-      });
-
-      // router.get(
-      //   route("v1.admin.users"),
-      //   {
-      //     ...newFilter,
-      //   },
-      //   { preserveState: true, preserveScroll: "errors" }
-      // );
-    }, 500)
-  ).current;
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-
-    debouncedSearch(filters);
-  }, [filters]);
-
-  function hasFilter() {
-    return (
-      filters.search ||
-      filters.start_date ||
-      filters.end_date ||
-      filters.subscription ||
-      filters.with_trashed
-    );
-  }
-
-  function deletePublisher(id: any) {
-    if (confirm("Are you sure you want to delete this publisher?")) {
-      destroy(route("web.publishers.destroy", id));
-    }
-  }
-
-  async function handleBorrowBook(data: any) {
-    try {
-      const result = await axios.post(
-        route("web.books.borrow", bookTemp.id),
-        {
-          return_date: format(data.date, "yyyy-MM-dd"),
-          fine: data.fine,
-          notes: data.notes,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-
-      if (result.status === 200) {
-        router.reload();
-
-        setIsOpen({
-          ...isOpen,
-          borrowBook: false,
-        });
-
-        toast.success("Book borrowed successfully");
-      }
-    } catch (error: any) {
-      toast.error(error?.message);
-    }
-  }
-
+const BookPage = ({ books }: any) => {
   return (
-    <DefaultLayout>
-      <Head title="Publisher" />
-
-      <BorrowBook
-        isOpen={isOpen.borrowBook}
-        handleClose={() => {
-          setIsOpen({
-            ...isOpen,
-            borrowBook: false,
-          });
-        }}
-        width="w-[600px] sm:w-[840px]"
-      >
-        <FormAddAdminUser book={bookTemp} onSubmit={handleBorrowBook} />
-      </BorrowBook>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Publishers</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Tabs
-                className="hidden sm:flex"
-                defaultValue="all"
-                value={filters.subscription}
-                onValueChange={(value) => {
-                  setFilters({
-                    ...filters,
-                    subscription: value,
-                  });
-                }}
-              >
-                <TabsList>
-                  <TabsTrigger value="">All</TabsTrigger>
-                  <TabsTrigger value="free">Free</TabsTrigger>
-                  <TabsTrigger value="premium">Premium</TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <div className="flex items-center justify-center">
-                <InputCheckBox
-                  id="with_trashed"
-                  onChange={(value) => {
-                    setFilters({
-                      ...filters,
-                      with_trashed: value,
-                    });
-                  }}
-                  error={""}
-                  label="With Trashed"
-                  value={filters.with_trashed}
-                  placeholder="Active"
+    <BookLayout>
+      <Head title="Books" />
+      <Tabs defaultValue="music" className="h-full space-y-6">
+        <TabsContent value="music" className="p-0 border-none outline-none">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold tracking-tight">Books</h2>
+              <p className="text-sm text-muted-foreground">
+                Improve your reading literacy today with our free reading
+                resources.
+              </p>
+            </div>
+          </div>
+          <Separator className="my-4" />
+          <div className="relative">
+            <div className="grid grid-cols-3 gap-4 pb-4 md:grid-cols-4">
+              {books.data?.map((album: any) => (
+                <AlbumArtwork
+                  key={album.name}
+                  book={album}
+                  className="w-[250px]"
+                  aspectRatio="portrait"
+                  width={250}
+                  height={330}
                 />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end space-x-2">
-              {hasFilter() && (
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setFilters({
-                      ...filters,
-                      search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
-                      per_page: "",
-                      with_trashed: false,
-                    });
-                  }}
-                >
-                  Clear Filter
-                </Button>
-              )}
-              <Input
-                placeholder="Search "
-                onChange={(e) => {
-                  setFilters({
-                    ...filters,
-                    search: e.target.value,
-                  });
-                }}
-                className="w-[150px] lg:w-[250px]"
-                value={filters.search}
-              />
-
-              <Link href="/publishers/create">
-                <Button>
-                  <Plus />
-                  Add Books
-                </Button>
-              </Link>
+              ))}
             </div>
           </div>
-          <div className="mt-4 overflow-x-auto border rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Author</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>ISBN</TableHead>
-                  <TableHead>Stock</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead className="text-center">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {books?.data?.map((book: any) => (
-                  <TableRow key={book.id}>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <div>
-                          {book?.id}
-                          {book?.title ?? "Unknown"}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{book.author}</TableCell>
-                    <TableCell>
-                      {book?.category?.name}
-                      <br />
-                      <span className="text-xs text-muted-foreground">
-                        {book?.category?.code}
-                      </span>
-                    </TableCell>
-                    <TableCell>{book.isbn}</TableCell>
-                    <TableCell>{book.stock}</TableCell>
-                    <TableCell>{book.status}</TableCell>
-                    <TableCell className="text-nowrap">
-                      {dateHumanize(book.created_at)}
-                      <br />
-                      <span className="text-xs text-muted-foreground">
-                        {toYearMonthDayHourMinute(book.created_at)}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-center gap-2">
-                        <Button variant="ghost">
-                          <Link href={route("web.publishers.edit", book.id)}>
-                            <Edit height={18} />
-                          </Link>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            deletePublisher(book.id);
-                          }}
-                        >
-                          <Trash height={18} />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          onClick={() => {
-                            setBookTemp(book);
-                            setIsOpen({
-                              ...isOpen,
-                              borrowBook: true,
-                            });
-                          }}
-                        >
-                          Borrow
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+          <div className="mt-6 space-y-1">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Made for You
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Get better recommendations the more you read.
+            </p>
+          </div>
+          <Separator className="my-4" />
+          <div className="relative">
+            <ScrollArea>
+              <div className="flex pb-4 space-x-4">
+                {books.data?.map((album: any) => (
+                  <AlbumArtwork
+                    key={album.name}
+                    book={album}
+                    className="w-[150px]"
+                    aspectRatio="square"
+                    width={150}
+                    height={150}
+                  />
                 ))}
-              </TableBody>
-            </Table>
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
           </div>
-        </CardContent>
-        <CardFooter>
-          <div className="flex items-center justify-between w-full">
-            <PaginateInfo from={books.from} to={books.to} total={books.total} />
-            <div>
-              <PaginationDemo links={books.links} />
+        </TabsContent>
+        <TabsContent
+          value="podcasts"
+          className="h-full flex-col border-none p-0 data-[state=active]:flex"
+        >
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-semibold tracking-tight">
+                New Episodes
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Your favorite podcasts. Updated daily.
+              </p>
             </div>
           </div>
-        </CardFooter>
-      </Card>
-    </DefaultLayout>
+          <Separator className="my-4" />
+        </TabsContent>
+      </Tabs>
+    </BookLayout>
   );
 };
 
-export default User;
-
-function BorrowBook({
-  isOpen,
-  handleClose,
-  children,
-  width = "w-[400px] sm:w-[540px]",
-}: Readonly<{
-  isOpen: boolean;
-  children?: React.ReactNode;
-  handleClose?: () => void;
-  width?: string;
-}>) {
-  return (
-    <Sheet open={isOpen} onOpenChange={handleClose}>
-      <SheetContent className={"w-[800px]"}>{children}</SheetContent>
-    </Sheet>
-  );
-}
-
-function FormAddAdminUser({ onSubmit, data }: any) {
-  const [forms, setForms] = useState({
-    date: new Date(),
-    fine: true,
-    notes: "",
-  });
-
-  const handleBorrowBook = async (e: any) => {
-    e.preventDefault();
-    onSubmit(forms);
-  };
-
-  return (
-    <SheetHeader>
-      <SheetTitle>Borrow Book</SheetTitle>
-      <SheetDescription>
-        Fill in the form below to borrow a book
-      </SheetDescription>
-
-      <Card className="mt-4 border-none">
-        <CardHeader>
-          <CardTitle>Book Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2 ">
-              <Label htmlFor="book">Return Date</Label>
-              <DatePickerDemo
-                onChange={(date) => {
-                  setForms({
-                    ...forms,
-                    date,
-                  });
-                }}
-                value={forms.date}
-              />
-            </div>
-            <div>
-              <InputCustom
-                error={""}
-                type="text"
-                onChange={(e) => {
-                  console.log(e.target.value);
-
-                  setForms({
-                    ...forms,
-                    notes: e.target.value,
-                  });
-                }}
-                label="Notes"
-                value={forms.notes}
-                placeholder="Notes"
-              />
-            </div>
-            <div>
-              <InputCheckBox
-                error={""}
-                label="Book Condition Good"
-                onChange={(e) => {
-                  setForms({
-                    ...forms,
-                    fine: e,
-                  });
-                }}
-                placeholder="Fine"
-                value={forms.fine}
-                id="bookCondition"
-              />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <div className="flex justify-end">
-            <Button
-              onClick={(e) => {
-                handleBorrowBook(e);
-              }}
-            >
-              Borrow
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </SheetHeader>
-  );
-}
+export default BookPage;

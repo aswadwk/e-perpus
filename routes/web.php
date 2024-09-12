@@ -20,6 +20,7 @@ Route::controller(AuthController::class)
     ->middleware("auth:web")
     ->group(function () {
         Route::post('auth/logout', 'doLogout')->name('web.auth.logout');
+        Route::get('/setting', 'setting')->name('web.auth.setting');
     });
 
 Route::controller(DashboardController::class)
@@ -31,7 +32,7 @@ Route::controller(DashboardController::class)
 Route::controller(DashboardController::class)
     ->middleware("auth:web")
     ->group(function () {
-        Route::get('/home', 'index')->name('web.home');
+        Route::get('/', 'index')->name('web.home');
     });
 
 Route::controller(MemberController::class)
