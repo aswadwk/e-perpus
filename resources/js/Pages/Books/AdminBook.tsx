@@ -62,7 +62,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-const Books = ({ books }: any) => {
+const AdminBooks = ({ books }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
     start_date: "",
@@ -152,201 +152,182 @@ const Books = ({ books }: any) => {
       }
     );
   }
+  return (
+    <DefaultLayout>
+      <Head title="Books" />
 
-  return <BookLayout />;
+      <SheetDemo
+        isOpen={isOpen.borrowBook}
+        onClose={() => {
+          setIsOpen({
+            ...isOpen,
+            borrowBook: false,
+          });
+        }}
+        width="w-[600px] sm:w-[840px]"
+        title="Borrow Book"
+        description="Fill in the form below to borrow a book"
+      >
+        <FormAddAdminUser form={formBorrowBook} onSubmit={handleBorrowBook} />
+      </SheetDemo>
 
-  // return (
-  //   <DefaultLayout>
-  //     <Head title="Publisher" />
+      <Card>
+        <CardHeader>
+          <CardTitle>Books</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between">
+            <div className="flex gap-2">
+              <Tabs
+                className="hidden sm:flex"
+                defaultValue="all"
+                value={filters.subscription}
+                onValueChange={(value) => {
+                  setFilters({
+                    ...filters,
+                    subscription: value,
+                  });
+                }}
+              >
+                <TabsList>
+                  <TabsTrigger value="">All</TabsTrigger>
+                  <TabsTrigger value="available">In Stock</TabsTrigger>
+                  <TabsTrigger value="unavailable">Out of Stock</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
 
-  //     <SheetDemo
-  //       isOpen={isOpen.borrowBook}
-  //       onClose={() => {
-  //         setIsOpen({
-  //           ...isOpen,
-  //           borrowBook: false,
-  //         });
-  //       }}
-  //       width="w-[600px] sm:w-[840px]"
-  //       title="Borrow Book"
-  //       description="Fill in the form below to borrow a book"
-  //     >
-  //       <FormAddAdminUser form={formBorrowBook} onSubmit={handleBorrowBook} />
-  //     </SheetDemo>
+            <div className="flex items-center justify-end space-x-2">
+              {hasFilter() && (
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      search: "",
+                      start_date: "",
+                      end_date: "",
+                      subscription: "",
+                      per_page: "",
+                      with_trashed: false,
+                    });
+                  }}
+                >
+                  Clear Filter
+                </Button>
+              )}
+              <Input
+                placeholder="Search "
+                onChange={(e) => {
+                  setFilters({
+                    ...filters,
+                    search: e.target.value,
+                  });
+                }}
+                className="w-[150px] lg:w-[250px]"
+                value={filters.search}
+              />
 
-  //     <Card>
-  //       <CardHeader>
-  //         <CardTitle>Publishers</CardTitle>
-  //       </CardHeader>
-  //       <CardContent>
-  //         <div className="flex justify-between">
-  //           <div className="flex gap-2">
-  //             <Tabs
-  //               className="hidden sm:flex"
-  //               defaultValue="all"
-  //               value={filters.subscription}
-  //               onValueChange={(value) => {
-  //                 setFilters({
-  //                   ...filters,
-  //                   subscription: value,
-  //                 });
-  //               }}
-  //             >
-  //               <TabsList>
-  //                 <TabsTrigger value="">All</TabsTrigger>
-  //                 <TabsTrigger value="free">Free</TabsTrigger>
-  //                 <TabsTrigger value="premium">Premium</TabsTrigger>
-  //               </TabsList>
-  //             </Tabs>
-
-  //             <div className="flex items-center justify-center">
-  //               <InputCheckBox
-  //                 id="with_trashed"
-  //                 onChange={(value) => {
-  //                   setFilters({
-  //                     ...filters,
-  //                     with_trashed: value,
-  //                   });
-  //                 }}
-  //                 error={""}
-  //                 label="With Trashed"
-  //                 value={filters.with_trashed}
-  //                 placeholder="Active"
-  //               />
-  //             </div>
-  //           </div>
-
-  //           <div className="flex items-center justify-end space-x-2">
-  //             {hasFilter() && (
-  //               <Button
-  //                 variant="destructive"
-  //                 onClick={() => {
-  //                   setFilters({
-  //                     ...filters,
-  //                     search: "",
-  //                     start_date: "",
-  //                     end_date: "",
-  //                     subscription: "",
-  //                     per_page: "",
-  //                     with_trashed: false,
-  //                   });
-  //                 }}
-  //               >
-  //                 Clear Filter
-  //               </Button>
-  //             )}
-  //             <Input
-  //               placeholder="Search "
-  //               onChange={(e) => {
-  //                 setFilters({
-  //                   ...filters,
-  //                   search: e.target.value,
-  //                 });
-  //               }}
-  //               className="w-[150px] lg:w-[250px]"
-  //               value={filters.search}
-  //             />
-
-  //             <Link href="/publishers/create">
-  //               <Button>
-  //                 <Plus />
-  //                 Add Books
-  //               </Button>
-  //             </Link>
-  //           </div>
-  //         </div>
-  //         <div className="mt-4 overflow-x-auto border rounded-lg">
-  //           <Table>
-  //             <TableHeader>
-  //               <TableRow>
-  //                 <TableHead>Title</TableHead>
-  //                 <TableHead>Author</TableHead>
-  //                 <TableHead>Category</TableHead>
-  //                 <TableHead>ISBN</TableHead>
-  //                 <TableHead>Stock</TableHead>
-  //                 <TableHead>Status</TableHead>
-  //                 <TableHead>Created At</TableHead>
-  //                 <TableHead className="text-center">Action</TableHead>
-  //               </TableRow>
-  //             </TableHeader>
-  //             <TableBody>
-  //               {books?.data?.map((book: any) => (
-  //                 <TableRow key={book.id}>
-  //                   <TableCell>
-  //                     <div className="flex gap-2">
-  //                       <div>
-  //                         {book?.id}
-  //                         {book?.title ?? "Unknown"}
-  //                       </div>
-  //                     </div>
-  //                   </TableCell>
-  //                   <TableCell>{book.author}</TableCell>
-  //                   <TableCell>
-  //                     {book?.category?.name}
-  //                     <br />
-  //                     <span className="text-xs text-muted-foreground">
-  //                       {book?.category?.code}
-  //                     </span>
-  //                   </TableCell>
-  //                   <TableCell>{book.isbn}</TableCell>
-  //                   <TableCell>{book.stock}</TableCell>
-  //                   <TableCell>{book.status}</TableCell>
-  //                   <TableCell className="text-nowrap">
-  //                     {dateHumanize(book.created_at)}
-  //                     <br />
-  //                     <span className="text-xs text-muted-foreground">
-  //                       {toYearMonthDayHourMinute(book.created_at)}
-  //                     </span>
-  //                   </TableCell>
-  //                   <TableCell>
-  //                     <div className="flex justify-center gap-2">
-  //                       <Button variant="ghost">
-  //                         <Link href={route("web.publishers.edit", book.id)}>
-  //                           <Edit height={18} />
-  //                         </Link>
-  //                       </Button>
-  //                       <Button
-  //                         variant="ghost"
-  //                         onClick={() => {
-  //                           deletePublisher(book.id);
-  //                         }}
-  //                       >
-  //                         <Trash height={18} />
-  //                       </Button>
-  //                       <Button
-  //                         variant="ghost"
-  //                         onClick={() => {
-  //                           formBorrowBook.setData("book_id", book.id);
-  //                           setIsOpen({
-  //                             ...isOpen,
-  //                             borrowBook: true,
-  //                           });
-  //                         }}
-  //                       >
-  //                         Borrow
-  //                       </Button>
-  //                     </div>
-  //                   </TableCell>
-  //                 </TableRow>
-  //               ))}
-  //             </TableBody>
-  //           </Table>
-  //         </div>
-  //       </CardContent>
-  //       <CardFooter>
-  //         <div className="flex items-center justify-between w-full">
-  //           <PaginateInfo from={books.from} to={books.to} total={books.total} />
-  //           <div>
-  //             <PaginationDemo links={books.links} />
-  //           </div>
-  //         </div>
-  //       </CardFooter>
-  //     </Card>
-  //   </DefaultLayout>
-  // );
+              <Link href={route("web.books.create")}>
+                <Button>
+                  <Plus />
+                  Add Books
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="mt-4 overflow-x-auto border rounded-lg">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>ISBN</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Created At</TableHead>
+                  <TableHead className="text-center">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {books?.data?.map((book: any) => (
+                  <TableRow key={book.id}>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <div>
+                          {book?.id}
+                          {book?.title ?? "Unknown"}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{book.author}</TableCell>
+                    <TableCell>
+                      {book?.category?.name}
+                      <br />
+                      <span className="text-xs text-muted-foreground">
+                        {book?.category?.code}
+                      </span>
+                    </TableCell>
+                    <TableCell>{book.isbn}</TableCell>
+                    <TableCell>{book.stock}</TableCell>
+                    <TableCell>{book.status}</TableCell>
+                    <TableCell className="text-nowrap">
+                      {dateHumanize(book.created_at)}
+                      <br />
+                      <span className="text-xs text-muted-foreground">
+                        {toYearMonthDayHourMinute(book.created_at)}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex justify-center gap-2">
+                        <Button variant="ghost">
+                          <Link href={route("web.publishers.edit", book.id)}>
+                            <Edit height={18} />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            deletePublisher(book.id);
+                          }}
+                        >
+                          <Trash height={18} />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            formBorrowBook.setData("book_id", book.id);
+                            setIsOpen({
+                              ...isOpen,
+                              borrowBook: true,
+                            });
+                          }}
+                        >
+                          Borrow
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <div className="flex items-center justify-between w-full">
+            <PaginateInfo from={books.from} to={books.to} total={books.total} />
+            <div>
+              <PaginationDemo links={books.links} />
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
+    </DefaultLayout>
+  );
 };
 
-export default Books;
+export default AdminBooks;
 
 function BorrowBook({
   isOpen,

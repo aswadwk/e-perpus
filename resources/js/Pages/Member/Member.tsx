@@ -104,81 +104,42 @@ const User = ({ members }: any) => {
         </CardHeader>
         <CardContent>
           <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Tabs
-                className="hidden sm:flex"
-                defaultValue="all"
-                value={filters.subscription}
-                onValueChange={(value) => {
+            {hasFilter() && (
+              <Button
+                variant="destructive"
+                onClick={() => {
                   setFilters({
                     ...filters,
-                    subscription: value,
+                    search: "",
+                    start_date: "",
+                    end_date: "",
+                    subscription: "",
+                    per_page: "",
+                    with_trashed: false,
                   });
                 }}
               >
-                <TabsList>
-                  <TabsTrigger value="">All</TabsTrigger>
-                  <TabsTrigger value="free">Free</TabsTrigger>
-                  <TabsTrigger value="premium">Premium</TabsTrigger>
-                </TabsList>
-              </Tabs>
+                Clear Filter
+              </Button>
+            )}
+            <Input
+              placeholder="Search "
+              onChange={(e) => {
+                setFilters({
+                  ...filters,
+                  search: e.target.value,
+                });
+              }}
+              className="w-[150px] lg:w-[250px]"
+              value={filters.search}
+            />
 
-              <div className="flex items-center justify-center">
-                <InputCheckBox
-                  id="with_trashed"
-                  onChange={(value) => {
-                    console.log(value);
-                    setFilters({
-                      ...filters,
-                      with_trashed: value,
-                    });
-                  }}
-                  error={""}
-                  label="With Trashed"
-                  value={filters.with_trashed}
-                  placeholder="Active"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end space-x-2">
-              {hasFilter() && (
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setFilters({
-                      ...filters,
-                      search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
-                      per_page: "",
-                      with_trashed: false,
-                    });
-                  }}
-                >
-                  Clear Filter
-                </Button>
-              )}
-              <Input
-                placeholder="Search "
-                onChange={(e) => {
-                  setFilters({
-                    ...filters,
-                    search: e.target.value,
-                  });
-                }}
-                className="w-[150px] lg:w-[250px]"
-                value={filters.search}
-              />
-
-              <Link href="/members/create">
-                <Button>
-                  <Plus />
-                  Add Member
-                </Button>
-              </Link>
-            </div>
+            <Link href="/admin/members/create">
+              <Button>
+                <Plus />
+                Add Member
+              </Button>
+            </Link>
           </div>
           <div className="mt-4 overflow-x-auto border rounded-lg">
             <Table>
