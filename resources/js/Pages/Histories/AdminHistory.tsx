@@ -8,6 +8,8 @@ import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
+import { SelectInput } from "@/Components/SelectInput/SelectInput";
+import SheetDemo from "@/Components/Sheet/Sheet";
 import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
 import { Calendar } from "@/Components/ui/calendar";
@@ -19,6 +21,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/Components/ui/card";
+import {
+  Command,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/Components/ui/command";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import {
@@ -51,6 +60,7 @@ import {
 } from "@/Shared/utils";
 import { Head, Link, router, useForm } from "@inertiajs/react";
 import axios from "axios";
+import { CommandEmpty } from "cmdk";
 import { format } from "date-fns";
 import { debounce } from "lodash";
 import {
@@ -64,7 +74,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-const Histories = ({ histories }: any) => {
+const AdminHistories = ({ histories }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
     start_date: "",
@@ -78,7 +88,11 @@ const Histories = ({ histories }: any) => {
     borrowBook: false,
   });
 
-  const [bookTemp, setBookTemp] = useState<any>({});
+  const formUpdateStatus = useForm({
+    status: "",
+    id: "",
+    return_date_actual: "",
+  });
 
   const { delete: destroy } = useForm({});
 
@@ -127,41 +141,46 @@ const Histories = ({ histories }: any) => {
     }
   }
 
-  async function handleBorrowBook(data: any) {
-    try {
-      const result = await axios.post(
-        route("web.books.borrow", bookTemp.id),
-        {
-          return_date: format(data.date, "yyyy-MM-dd"),
-          fine: data.fine,
-          notes: data.notes,
+  async function handleBorrowBook() {
+    console.log(formUpdateStatus.data);
+
+    formUpdateStatus.post(
+      route("web.histories.update", formUpdateStatus.data.id),
+      {
+        preserveState: true,
+        onSuccess: () => {
+          formUpdateStatus.reset();
+          toast.success("Book status updated successfully");
+          setIsOpen({
+            ...isOpen,
+            borrowBook: false,
+          });
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-
-      if (result.status === 200) {
-        router.reload();
-
-        setIsOpen({
-          ...isOpen,
-          borrowBook: false,
-        });
-
-        toast.success("Book borrowed successfully");
+        onError: () => {
+          toast.error("Failed to update book status");
+        },
       }
-    } catch (error: any) {
-      toast.error(error?.message);
-    }
+    );
   }
 
   return (
-    <BookLayout>
+    <DefaultLayout>
       <Head title="Publisher" />
+
+      <SheetDemo
+        isOpen={isOpen.borrowBook}
+        onClose={() => {
+          setIsOpen({
+            ...isOpen,
+            borrowBook: false,
+          });
+        }}
+        width="w-[600px] sm:w-[840px]"
+        title="Update Status"
+        description="Fill in the form below to update the status of the book"
+      >
+        <FormUpdateStatus form={formUpdateStatus} onSubmit={handleBorrowBook} />
+      </SheetDemo>
 
       <Card className="w-full mx-auto">
         <CardHeader>
@@ -199,21 +218,17 @@ const Histories = ({ histories }: any) => {
                   <TableCell>{item.return_date}</TableCell>
                   <TableCell>{item.status}</TableCell>
                   <TableCell>
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button>
-                          <Edit size={16} />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <Button>
-                          <Eye size={16} />
-                        </Button>
-                        <Button>
-                          <Trash size={16} />
-                        </Button>
-                      </PopoverContent>
-                    </Popover>
+                    <Button
+                      onClick={() => {
+                        formUpdateStatus.setData("id", item.id);
+                        setIsOpen({
+                          ...isOpen,
+                          borrowBook: true,
+                        });
+                      }}
+                    >
+                      <Edit size={16} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -221,113 +236,100 @@ const Histories = ({ histories }: any) => {
           </Table>
         </CardContent>
       </Card>
-    </BookLayout>
+    </DefaultLayout>
   );
 };
 
-export default Histories;
+export default AdminHistories;
 
-function BorrowBook({
-  isOpen,
-  handleClose,
-  children,
-  width = "w-[400px] sm:w-[540px]",
-}: Readonly<{
-  isOpen: boolean;
-  children?: React.ReactNode;
-  handleClose?: () => void;
-  width?: string;
-}>) {
+type Status = {
+  value: string;
+  label: string;
+};
+
+const statuses: Status[] = [
+  {
+    value: "pending",
+    label: "Pending",
+  },
+  {
+    value: "borrowed",
+    label: "Borrowed",
+  },
+  {
+    value: "returned",
+    label: "Returned",
+  },
+  {
+    value: "rejected",
+    label: "Rejected",
+  },
+];
+
+function FormUpdateStatus({ onSubmit, form }: any) {
   return (
-    <Sheet open={isOpen} onOpenChange={handleClose}>
-      <SheetContent className={"w-[800px]"}>{children}</SheetContent>
-    </Sheet>
+    <div className="mt-4">
+      <div className="flex flex-col gap-3 mb-4">
+        <div className="flex flex-col gap-2 ">
+          <SelectInput
+            onChange={(value) => form.setData("status", value)}
+            label="Status"
+            placeholder="Select status..."
+            items={statuses}
+            value={form.data.status}
+          />
+        </div>
+        {/* <div className="flex flex-col gap-2">
+          <Label htmlFor="status">Status</Label>
+          <DatePickerDemo
+            onChange={(date) => {
+              form.setData("return_date_actual", date);
+            }}
+            value={form.data.return_date_actual}
+          />
+        </div> */}
+      </div>
+
+      <Button
+        onClick={() => {
+          onSubmit();
+        }}
+      >
+        Update
+      </Button>
+    </div>
   );
 }
 
-function FormAddAdminUser({ onSubmit, data }: any) {
-  const [forms, setForms] = useState({
-    date: new Date(),
-    fine: true,
-    notes: "",
-  });
-
-  const handleBorrowBook = async (e: any) => {
-    e.preventDefault();
-    onSubmit(forms);
-  };
-
+function StatusList({
+  setOpen,
+  setSelectedStatus,
+}: {
+  setOpen: (open: boolean) => void;
+  setSelectedStatus: (status: Status | null) => void;
+}) {
   return (
-    <SheetHeader>
-      <SheetTitle>Borrow Book</SheetTitle>
-      <SheetDescription>
-        Fill in the form below to borrow a book
-      </SheetDescription>
-
-      <Card className="mt-4 border-none">
-        <CardHeader>
-          <CardTitle>Book Details</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2 ">
-              <Label htmlFor="book">Return Date</Label>
-              <DatePickerDemo
-                onChange={(date) => {
-                  setForms({
-                    ...forms,
-                    date,
-                  });
-                }}
-                value={forms.date}
-              />
-            </div>
-            <div>
-              <InputCustom
-                error={""}
-                type="text"
-                onChange={(e) => {
-                  console.log(e.target.value);
-
-                  setForms({
-                    ...forms,
-                    notes: e.target.value,
-                  });
-                }}
-                label="Notes"
-                value={forms.notes}
-                placeholder="Notes"
-              />
-            </div>
-            <div>
-              <InputCheckBox
-                error={""}
-                label="Book Condition Good"
-                onChange={(e) => {
-                  setForms({
-                    ...forms,
-                    fine: e,
-                  });
-                }}
-                placeholder="Fine"
-                value={forms.fine}
-                id="bookCondition"
-              />
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <div className="flex justify-end">
-            <Button
-              onClick={(e) => {
-                handleBorrowBook(e);
+    <Command>
+      <CommandInput placeholder="Filter status..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup>
+          {statuses.map((status) => (
+            <CommandItem
+              key={status.value}
+              value={status.value}
+              onSelect={(value) => {
+                setSelectedStatus(
+                  statuses.find((priority) => priority.value === value) || null
+                );
+                setOpen(false);
               }}
             >
-              Borrow
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </SheetHeader>
+              {status.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
   );
 }

@@ -9,6 +9,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        return redirect()->route('web.books.index');
+    }
+
+    public function homeAdmin()
+    {
         return inertia('Dashboard/Dashboard');
     }
 }

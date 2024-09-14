@@ -32,7 +32,7 @@ class AuthController extends Controller
                 return redirect()->intended('/admin/home');
             }
 
-            return redirect()->intended('/home');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
@@ -49,5 +49,10 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    public function setting()
+    {
+        return inertia('Setting/Setting');
     }
 }

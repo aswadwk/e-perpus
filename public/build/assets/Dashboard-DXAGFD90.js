@@ -1,0 +1,1 @@
+import{j as r}from"./app-mwD8rKH0.js";import{D as o}from"./DefaultLayout-y9en6JwO.js";import"./index-COBK1RFK.js";import"./button-DM4OJObE.js";import"./index-BwAztNm9.js";import"./index-D_-WwNEz.js";import"./sheet-DRZm5MKN.js";const u=()=>r.jsx(o,{children:"Dashboard"});export{u as Dashboard,u as default};

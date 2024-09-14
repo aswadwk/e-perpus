@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Borrow;
+use App\Models\Category;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +15,14 @@ class BookController extends Controller
     public function index()
     {
         return inertia('Books/Books', [
+            'books' => Book::with(['category', 'publisher'])
+                ->orderBy('id', 'desc')->paginate(10),
+        ]);
+    }
+
+    public function adminBook()
+    {
+        return inertia('Books/AdminBook', [
             'books' => Book::with(['category', 'publisher'])
                 ->orderBy('id', 'desc')->paginate(10),
         ]);
@@ -32,9 +42,6 @@ class BookController extends Controller
             try {
                 DB::beginTransaction();
 
-                $book->stock -= 1;
-                $book->save();
-
                 Borrow::create([
                     'book_id' => $book->id,
                     'user_id' => auth('web')->user()->id,
@@ -42,24 +49,27 @@ class BookController extends Controller
                     'return_date' => $request->return_date,
                     'notes' => $request->notes ?? null,
                     'fine' => $request->fine ?? 0,
+                    'status' => 'pending',
                 ]);
 
                 DB::commit();
 
-                return response()->json([
-                    'message' => 'Book borrowed successfully',
-                ]);
+                return redirect()->route('web.books.index');
             } catch (\Throwable $th) {
                 DB::rollBack();
 
-                return response()->json([
-                    'message' => $th->getMessage(),
-                ], 200);
+                throw $th;
             }
         }
 
-        return response()->json([
-            'message' => 'Book out of stock',
-        ], 200);
+        return redirect()->back()->with('error', 'Stock out of book');
+    }
+
+    public function create()
+    {
+        return inertia('Books/Create', [
+            'categories' => Category::all(),
+            'publishers' => Publisher::all(),
+        ]);
     }
 }
