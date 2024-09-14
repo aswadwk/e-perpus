@@ -8,7 +8,7 @@ import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
-import { SelectInput } from "@/Components/SelectInput/SelectInput";
+import SelectInput from "@/Components/SelectInput/SelectInput";
 import SheetDemo from "@/Components/Sheet/Sheet";
 import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
@@ -73,6 +73,21 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+
+function updateStatus(status: string): string {
+  switch (status) {
+    case "pending":
+      return "Menunggu";
+    case "borrowed":
+      return "Dipinjam";
+    case "returned":
+      return "Dikembalikan";
+    case "rejected":
+      return "Ditolak";
+    default:
+      return status;
+  }
+}
 
 const AdminHistories = ({ histories }: any) => {
   const [filters, setFilters] = useState<any>({
@@ -176,29 +191,29 @@ const AdminHistories = ({ histories }: any) => {
           });
         }}
         width="w-[600px] sm:w-[840px]"
-        title="Update Status"
-        description="Fill in the form below to update the status of the book"
+        title="Ubah Status Peminjaman Buku"
+        description="Ubah status peminjaman buku"
       >
         <FormUpdateStatus form={formUpdateStatus} onSubmit={handleBorrowBook} />
       </SheetDemo>
 
       <Card className="w-full mx-auto">
         <CardHeader>
-          <CardTitle>Book Borrowing History</CardTitle>
+          <CardTitle>Histori Peminjaman Buku</CardTitle>
           <CardDescription>
-            A list of recent book loans and their current status.
+            Daftar pemijaman buku yang pernah dilakukan oleh pengguna
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Book Title</TableHead>
+                <TableHead>Judul</TableHead>
                 <TableHead>Author</TableHead>
-                <TableHead>Borrow Date</TableHead>
-                <TableHead>Return Date</TableHead>
+                <TableHead>Tanggal Pinjam</TableHead>
+                <TableHead>Tanggal Balik</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -216,9 +231,10 @@ const AdminHistories = ({ histories }: any) => {
                     </span>
                   </TableCell>
                   <TableCell>{item.return_date}</TableCell>
-                  <TableCell>{item.status}</TableCell>
+                  <TableCell>{updateStatus(item.status)}</TableCell>
                   <TableCell>
                     <Button
+                      variant="ghost"
                       onClick={() => {
                         formUpdateStatus.setData("id", item.id);
                         setIsOpen({
@@ -254,15 +270,15 @@ const statuses: Status[] = [
   },
   {
     value: "borrowed",
-    label: "Borrowed",
+    label: "Dipinjam",
   },
   {
     value: "returned",
-    label: "Returned",
+    label: "Dikembalikan",
   },
   {
     value: "rejected",
-    label: "Rejected",
+    label: "Ditolak",
   },
 ];
 

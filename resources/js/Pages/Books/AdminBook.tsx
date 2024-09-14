@@ -173,7 +173,7 @@ const AdminBooks = ({ books }: any) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Books</CardTitle>
+          <CardTitle>Buku</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex justify-between">
@@ -231,7 +231,7 @@ const AdminBooks = ({ books }: any) => {
               <Link href={route("web.books.create")}>
                 <Button>
                   <Plus />
-                  Add Books
+                  Tambah Buku
                 </Button>
               </Link>
             </div>

@@ -16,7 +16,7 @@ const Setting = () => {
         <div className="space-y-1">
           <h2 className="text-2xl font-semibold tracking-tight">Setting</h2>
           <p className="text-sm text-muted-foreground">
-            Setting for your account
+            Atur akun dan informasi
           </p>
         </div>
       </div>
@@ -37,7 +37,7 @@ const Setting = () => {
             post(route("web.auth.logout"));
           }}
         >
-          Logout
+          Keluar
         </button>
       </div>
     </BookLayout>

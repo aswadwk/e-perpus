@@ -74,3 +74,19 @@ export function diffDayNow(date: any) {
 
   return dateMoment.diff(moment(), 'days');
 }
+
+
+export function updateStatus(status: string): string {
+  switch (status) {
+    case "pending":
+      return "Menunggu";
+    case "borrowed":
+      return "Dipinjam";
+    case "returned":
+      return "Dikembalikan";
+    case "rejected":
+      return "Ditolak";
+    default:
+      return status;
+  }
+}

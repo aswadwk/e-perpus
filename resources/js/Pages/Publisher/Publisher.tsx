@@ -103,63 +103,26 @@ const User = ({ publishers }: any) => {
           <CardTitle>Publishers</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Tabs
-                className="hidden sm:flex"
-                defaultValue="all"
-                value={filters.subscription}
-                onValueChange={(value) => {
+          <div className="flex items-center justify-between">
+            {hasFilter() && (
+              <Button
+                variant="destructive"
+                onClick={() => {
                   setFilters({
                     ...filters,
-                    subscription: value,
+                    search: "",
+                    start_date: "",
+                    end_date: "",
+                    subscription: "",
+                    per_page: "",
+                    with_trashed: false,
                   });
                 }}
               >
-                <TabsList>
-                  <TabsTrigger value="">All</TabsTrigger>
-                  <TabsTrigger value="free">Free</TabsTrigger>
-                  <TabsTrigger value="premium">Premium</TabsTrigger>
-                </TabsList>
-              </Tabs>
-
-              <div className="flex items-center justify-center">
-                <InputCheckBox
-                  id="with_trashed"
-                  onChange={(value) => {
-                    console.log(value);
-                    setFilters({
-                      ...filters,
-                      with_trashed: value,
-                    });
-                  }}
-                  error={""}
-                  label="With Trashed"
-                  value={filters.with_trashed}
-                  placeholder="Active"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end space-x-2">
-              {hasFilter() && (
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setFilters({
-                      ...filters,
-                      search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
-                      per_page: "",
-                      with_trashed: false,
-                    });
-                  }}
-                >
-                  Clear Filter
-                </Button>
-              )}
+                Clear Filter
+              </Button>
+            )}
+            <div>
               <Input
                 placeholder="Search "
                 onChange={(e) => {
@@ -171,22 +134,22 @@ const User = ({ publishers }: any) => {
                 className="w-[150px] lg:w-[250px]"
                 value={filters.search}
               />
-
-              <Link href="/publishers/create">
-                <Button>
-                  <Plus />
-                  Add Publisher
-                </Button>
-              </Link>
             </div>
+
+            <Link href="/publishers/create">
+              <Button>
+                <Plus />
+                Tambah Publisher
+              </Button>
+            </Link>
           </div>
           <div className="mt-4 overflow-x-auto border rounded-lg">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Code</TableHead>
-                  <TableHead>Verified</TableHead>
+                  <TableHead>Nama</TableHead>
+                  <TableHead>Kode</TableHead>
+                  <TableHead>Terverfikasi</TableHead>
                   <TableHead>Created At</TableHead>
                   <TableHead className="text-center">Action</TableHead>
                 </TableRow>

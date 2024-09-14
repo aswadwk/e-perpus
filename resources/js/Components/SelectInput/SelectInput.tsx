@@ -58,7 +58,7 @@ type SelectInputProps = {
   value: string;
 };
 
-export function SelectInput({
+export default function SelectInput({
   items,
   label = "Select",
   placeholder = "Search...",

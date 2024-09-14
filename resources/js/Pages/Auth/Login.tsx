@@ -33,9 +33,9 @@ export default function Login() {
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
             <div className="grid gap-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
+              <h1 className="text-3xl font-bold">Masuk</h1>
               <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
+                Masukkan email dan password Anda
               </p>
             </div>
             <form onSubmit={handleSubmit}>
@@ -45,7 +45,7 @@ export default function Login() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="Masukkan email anda"
                     required
                     value={data.email}
                     onChange={(e) => setData("email", e.target.value)}
@@ -55,37 +55,22 @@ export default function Login() {
                     <span className="text-xs text-red-500">{errors.email}</span>
                   )}
                 </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <Link
-                      href="/forgot-password"
-                      className="inline-block ml-auto text-sm underline"
-                      tabIndex={-1}
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
+                <div className="grid gap-2 mb-4">
                   <Input
                     id="password"
                     type="password"
                     required
+                    placeholder="Masukkan password anda"
                     value={data.password}
                     onChange={(e) => setData("password", e.target.value)}
                     tabIndex={0}
                   />
                 </div>
                 <Button type="submit" className="w-full" tabIndex={0}>
-                  Login
+                  Masuk
                 </Button>
               </div>
             </form>
-            <div className="mt-4 text-sm text-center">
-              Don&apos;t have an account?{" "}
-              <Link href="#" className="underline">
-                Sign up
-              </Link>
-            </div>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@ export function Sidebar({ className }: any) {
                 className="justify-start w-full"
               >
                 <BookCopyIcon className="w-4 h-4 mr-2" />
-                Books
+                Buku
               </Button>
             </Link>
           </div>
@@ -40,7 +40,7 @@ export function Sidebar({ className }: any) {
                 className="justify-start w-full"
               >
                 <History className="w-4 h-4 mr-2" />
-                Histories
+                Histori Peminjaman
               </Button>
             </Link>
           </div>
@@ -89,7 +89,7 @@ export function Sidebar({ className }: any) {
               className="justify-start w-full"
             >
               <Settings2 className="w-4 h-4 mr-2" />
-              Account
+              Akun
             </Button>
           </Link>
         </div>

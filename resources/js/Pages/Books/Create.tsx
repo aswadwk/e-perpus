@@ -1,6 +1,6 @@
 import InputCustom from "@/Components/Input/InputCustom";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
-import { SelectInput } from "@/Components/SelectInput/SelectInput";
+import SelectInput from "@/Components/SelectInput/SelectInput";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -54,17 +54,17 @@ const Create = ({ categories, publishers }: any) => {
   return (
     <DefaultLayout>
       <CardHeader>
-        <CardTitle>Add Book</CardTitle>
-        <CardDescription>Add a new book</CardDescription>
+        <CardTitle>Tambah Buku</CardTitle>
+        <CardDescription>Tambah buku baru</CardDescription>
       </CardHeader>
       <CardContent>
         <form action="" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <InputCustom
-                label="Title"
+                label="Judul"
                 type="text"
-                placeholder="Title"
+                placeholder="Judul"
                 value={data.title}
                 onChange={(e) => setData("title", e.target.value)}
                 error={errors.title}
@@ -82,9 +82,9 @@ const Create = ({ categories, publishers }: any) => {
             </div>
             <div>
               <SelectInput
-                label="Category"
+                label="Kategori"
                 value={data.category_id}
-                placeholder="Category"
+                placeholder="Kategori"
                 items={categories.map((category: any) => ({
                   value: category.id,
                   label: category.name,
@@ -128,9 +128,9 @@ const Create = ({ categories, publishers }: any) => {
             </div>
             <div>
               <InputCustom
-                label="Price"
+                label="Harga"
                 type="number"
-                placeholder="Price"
+                placeholder="Harga"
                 value={data.price}
                 onChange={(e) => setData("price", e.target.value)}
                 error={errors.price}
@@ -150,7 +150,7 @@ const Create = ({ categories, publishers }: any) => {
           </div>
           <div className="mt-4">
             <Button type="submit" disabled={processing}>
-              Save
+              Simpan
             </Button>
           </div>
         </form>

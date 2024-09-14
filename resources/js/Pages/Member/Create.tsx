@@ -44,8 +44,8 @@ const Create = () => {
       {/* <h1 className="mb-4 text-2xl font-semibold">Create Member</h1> */}
 
       <CardHeader>
-        <CardTitle>Create Member</CardTitle>
-        <CardDescription>Create a new member</CardDescription>
+        <CardTitle>Tambah Pengguna</CardTitle>
+        <CardDescription>Tambah pengguna baru</CardDescription>
       </CardHeader>
       <CardContent>
         <form action="" onSubmit={handleSubmit}>
@@ -114,7 +114,7 @@ const Create = () => {
           </div>
           <div className="mt-4">
             <Button type="submit" disabled={processing}>
-              Save
+              Simpan
             </Button>
           </div>
         </form>

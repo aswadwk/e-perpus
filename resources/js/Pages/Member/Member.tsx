@@ -100,7 +100,7 @@ const User = ({ members }: any) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Members</CardTitle>
+          <CardTitle>Pengguna</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex justify-between">
@@ -137,7 +137,7 @@ const User = ({ members }: any) => {
             <Link href="/admin/members/create">
               <Button>
                 <Plus />
-                Add Member
+                Tambah Pengguna
               </Button>
             </Link>
           </div>
@@ -145,12 +145,12 @@ const User = ({ members }: any) => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Code</TableHead>
+                  <TableHead>Nama</TableHead>
+                  <TableHead>Kode</TableHead>
                   <TableHead>NIS</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Register At</TableHead>
-                  <TableHead>Action</TableHead>
+                  <TableHead>Alamat</TableHead>
+                  <TableHead>Ditambahkan pada</TableHead>
+                  <TableHead>Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

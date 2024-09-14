@@ -42,7 +42,7 @@ import {
   TableRow,
 } from "@/Components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { cn } from "@/Lib/utils";
+import { cn, updateStatus } from "@/Lib/utils";
 import {
   dateHumanize,
   removeEmptyValues,
@@ -165,21 +165,18 @@ const Histories = ({ histories }: any) => {
 
       <Card className="w-full mx-auto">
         <CardHeader>
-          <CardTitle>Book Borrowing History</CardTitle>
-          <CardDescription>
-            A list of recent book loans and their current status.
-          </CardDescription>
+          <CardTitle>Histori Peminjaman Buku</CardTitle>
+          <CardDescription>Daftar histori peminjaman buku</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Book Title</TableHead>
+                <TableHead>Judul</TableHead>
                 <TableHead>Author</TableHead>
-                <TableHead>Borrow Date</TableHead>
-                <TableHead>Return Date</TableHead>
+                <TableHead>Tanggal Pinjam</TableHead>
+                <TableHead>Tanggal Dikembalikan</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -197,24 +194,7 @@ const Histories = ({ histories }: any) => {
                     </span>
                   </TableCell>
                   <TableCell>{item.return_date}</TableCell>
-                  <TableCell>{item.status}</TableCell>
-                  <TableCell>
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button>
-                          <Edit size={16} />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent>
-                        <Button>
-                          <Eye size={16} />
-                        </Button>
-                        <Button>
-                          <Trash size={16} />
-                        </Button>
-                      </PopoverContent>
-                    </Popover>
-                  </TableCell>
+                  <TableCell>{updateStatus(item.status)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

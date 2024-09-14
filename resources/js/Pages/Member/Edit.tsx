@@ -44,8 +44,8 @@ const Edit = ({ member }: any) => {
       {/* <h1 className="mb-4 text-2xl font-semibold">Create Member</h1> */}
 
       <CardHeader>
-        <CardTitle>Edit Member</CardTitle>
-        <CardDescription>Edit a new member</CardDescription>
+        <CardTitle>Ubah Pengguna</CardTitle>
+        <CardDescription>Ubah Pengguna</CardDescription>
       </CardHeader>
       <CardContent>
         <form action="" onSubmit={handleSubmit}>
@@ -114,7 +114,7 @@ const Edit = ({ member }: any) => {
           </div>
           <div className="mt-4">
             <Button type="submit" disabled={processing}>
-              Update
+              Simpan
             </Button>
           </div>
         </form>
