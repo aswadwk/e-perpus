@@ -104,39 +104,41 @@ const User = ({ publishers }: any) => {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
-            {hasFilter() && (
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  setFilters({
-                    ...filters,
-                    search: "",
-                    start_date: "",
-                    end_date: "",
-                    subscription: "",
-                    per_page: "",
-                    with_trashed: false,
-                  });
-                }}
-              >
-                Clear Filter
-              </Button>
-            )}
-            <div>
-              <Input
-                placeholder="Search "
-                onChange={(e) => {
-                  setFilters({
-                    ...filters,
-                    search: e.target.value,
-                  });
-                }}
-                className="w-[150px] lg:w-[250px]"
-                value={filters.search}
-              />
+            <div className="flex gap-2">
+              <div>
+                <Input
+                  placeholder="Search "
+                  onChange={(e) => {
+                    setFilters({
+                      ...filters,
+                      search: e.target.value,
+                    });
+                  }}
+                  className="w-[150px] lg:w-[250px]"
+                  value={filters.search}
+                />
+              </div>
+              {hasFilter() && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      search: "",
+                      start_date: "",
+                      end_date: "",
+                      subscription: "",
+                      per_page: "",
+                      with_trashed: false,
+                    });
+                  }}
+                >
+                  Clear Filter
+                </Button>
+              )}
             </div>
 
-            <Link href="/publishers/create">
+            <Link href="/admin/publishers/create">
               <Button>
                 <Plus />
                 Tambah Publisher

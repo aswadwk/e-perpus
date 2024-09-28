@@ -72,4 +72,86 @@ class BookController extends Controller
             'publishers' => Publisher::all(),
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'code' => ['nullable', 'string', 'unique:books'],
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'publisher_id' => ['required', 'exists:publishers,id'],
+            'stock' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'is_available' => ['nullable', 'boolean'],
+            'isbn' => ['required', 'string'],
+            'author' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'year_published' => ['required', 'date_format:Y'],
+        ]);
+
+        try {
+            $slug = str()->slug($request->title);
+
+            $request->merge([
+                'slug' => $slug,
+                'is_available' => $request->is_available ?? true,
+            ]);
+
+            Book::create($request->all());
+
+            return redirect()->route('web.books.admin');
+        } catch (\Throwable $th) {
+
+            throw $th;
+        }
+    }
+
+    public function edit($id)
+    {
+        return inertia('Books/Edit', [
+            'book' => Book::with(['category', 'publisher'])->find($id),
+            'categories' => Category::all(),
+            'publishers' => Publisher::all(),
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'code' => ['nullable', 'string', 'unique:books,code,' . $id],
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'publisher_id' => ['required', 'exists:publishers,id'],
+            'stock' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'is_available' => ['nullable', 'boolean'],
+            'isbn' => ['required', 'string'],
+            'author' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'year_published' => ['required', 'date_format:Y'],
+        ]);
+
+        try {
+
+            Book::find($id)->update($request->all());
+
+            return redirect()->route('web.books.admin');
+        } catch (\Throwable $th) {
+
+            throw $th;
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+
+            Book::find($id)->delete();
+
+            return redirect()->route('web.books.admin');
+        } catch (\Throwable $th) {
+
+            throw $th;
+        }
+    }
 }

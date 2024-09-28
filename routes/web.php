@@ -64,6 +64,10 @@ Route::controller(BookController::class)
         // Admin
         Route::get('/admin/books', 'adminBook')->name('web.books.admin');
         Route::get('/admin/books/create', 'create')->name('web.books.create');
+        Route::post('/admin/books/store', 'store')->name('web.books.store');
+        Route::get('/admin/books/{id}/edit', 'edit')->name('web.books.edit');
+        Route::put('/admin/books/{id}/update', 'update')->name('web.books.update');
+        Route::delete('/admin/books/{id}/delete', 'destroy')->name('web.books.destroy');
 
         // User
         Route::get('/books', 'index')->name('web.books.index');

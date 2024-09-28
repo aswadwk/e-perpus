@@ -13,24 +13,24 @@ import {
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = ({ categories, publishers }: any) => {
-  const { data, setData, post, errors, processing, reset } = useForm({
-    title: "",
-    author: "",
-    category_id: "",
-    publisher_id: "",
-    isbn: "",
-    cover: "",
-    year_published: "",
-    stock: "",
-    price: "",
-    description: "",
+const Edit = ({ book, categories, publishers }: any) => {
+  const { data, setData, put, errors, processing, reset } = useForm({
+    title: book.title || "",
+    author: book.author || "",
+    category_id: book.category_id || "",
+    publisher_id: book.publisher_id || "",
+    isbn: book.isbn || "",
+    cover: book.cover || "",
+    year_published: book.year_published || "",
+    stock: book.stock || "",
+    price: book.price || "",
+    description: book.description || "",
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    post(route("web.books.store"), {
+    put(route("web.books.update", book.id), {
       preserveScroll: true,
       onSuccess: () => {
         reset();
@@ -44,8 +44,8 @@ const Create = ({ categories, publishers }: any) => {
   return (
     <DefaultLayout>
       <CardHeader>
-        <CardTitle>Tambah Buku</CardTitle>
-        <CardDescription>Tambah buku baru</CardDescription>
+        <CardTitle>Edit Buku</CardTitle>
+        <CardDescription>Edit Buku</CardDescription>
       </CardHeader>
       <CardContent>
         <form action="" onSubmit={handleSubmit}>
@@ -93,7 +93,7 @@ const Create = ({ categories, publishers }: any) => {
                 }))}
                 onChange={(value: any) => setData("publisher_id", value)}
                 error={errors.publisher_id}
-                currentValue={data.publisher_id.toString()}
+                currentValue={data.category_id.toString()}
               />
             </div>
             <div>
@@ -159,4 +159,4 @@ const Create = ({ categories, publishers }: any) => {
   );
 };
 
-export default Create;
+export default Edit;

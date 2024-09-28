@@ -11,7 +11,19 @@ class Book extends Model
 {
     use HasFactory, SoftDeletes, Timestamp;
 
-    protected $fillable = ['isbn', 'title', 'author', 'publisher_id', 'category_id', 'stock'];
+    protected $fillable = [
+        'isbn',
+        'title',
+        'author',
+        'publisher_id',
+        'category_id',
+        'stock',
+        'price',
+        'description',
+        'cover',
+        'year_published',
+        'slug',
+    ];
 
     public function category()
     {

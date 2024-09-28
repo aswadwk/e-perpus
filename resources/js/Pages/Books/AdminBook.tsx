@@ -127,9 +127,9 @@ const AdminBooks = ({ books }: any) => {
     );
   }
 
-  function deletePublisher(id: any) {
-    if (confirm("Are you sure you want to delete this publisher?")) {
-      destroy(route("web.publishers.destroy", id));
+  function deleteBook(id: any) {
+    if (confirm("Are you sure you want to delete this book?")) {
+      destroy(route("web.books.destroy", id));
     }
   }
 
@@ -282,14 +282,14 @@ const AdminBooks = ({ books }: any) => {
                     <TableCell>
                       <div className="flex justify-center gap-2">
                         <Button variant="ghost">
-                          <Link href={route("web.publishers.edit", book.id)}>
+                          <Link href={route("web.books.edit", book.id)}>
                             <Edit height={18} />
                           </Link>
                         </Button>
                         <Button
                           variant="ghost"
                           onClick={() => {
-                            deletePublisher(book.id);
+                            deleteBook(book.id);
                           }}
                         >
                           <Trash height={18} />

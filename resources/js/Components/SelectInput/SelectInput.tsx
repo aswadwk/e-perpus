@@ -53,9 +53,8 @@ type SelectInputProps = {
   label?: string;
   placeholder?: string;
   onChange: (value: string) => void;
-  withSearch?: boolean;
   error?: string;
-  value: string;
+  currentValue: string;
 };
 
 export default function SelectInput({
@@ -63,15 +62,16 @@ export default function SelectInput({
   label = "Select",
   placeholder = "Search...",
   onChange,
-  withSearch = false,
   error,
-  value,
+  currentValue,
 }: Readonly<SelectInputProps>) {
+  console.log("currentValue", currentValue);
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(currentValue || "");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Label htmlFor="status">{label}</Label>
+      <Label className="mb-4">{label}</Label>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -80,20 +80,13 @@ export default function SelectInput({
           className="justify-between w-full"
         >
           {value
-            ? items.find((data: SelectInput) => data.value === value)?.label
-            : label}
+            ? items.find((framework) => framework.value === value)?.label
+            : placeholder}
           <CaretSortIcon className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 popover-content-width-full">
         <Command className="w-full">
-          {withSearch && (
-            <CommandInput
-              placeholder={placeholder}
-              className="w-full h-9"
-              onValueChange={(value) => onChange(value)}
-            />
-          )}
           <CommandList>
             <CommandEmpty>No data found.</CommandEmpty>
             <CommandGroup className="w-full">
@@ -103,6 +96,7 @@ export default function SelectInput({
                   key={item.value}
                   value={item.value}
                   onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
                     onChange(currentValue);
                     setOpen(false);
                   }}
@@ -120,7 +114,7 @@ export default function SelectInput({
           </CommandList>
         </Command>
       </PopoverContent>
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <div className="mt-1 text-xs text-red-500">{error}</div>}
     </Popover>
   );
 }
