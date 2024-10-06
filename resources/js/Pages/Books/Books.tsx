@@ -7,7 +7,7 @@ import { Tabs, TabsContent } from "@/Components/ui/tabs";
 import { Head } from "@inertiajs/react";
 import { Button } from "react-day-picker";
 
-const BookPage = ({ books }: any) => {
+const BookPage = ({ books, recommendations }: any) => {
   return (
     <BookLayout>
       <Head title="Books" />
@@ -49,14 +49,14 @@ const BookPage = ({ books }: any) => {
           <div className="relative">
             <ScrollArea>
               <div className="flex pb-4 space-x-4">
-                {books.data?.map((album: any) => (
+                {recommendations?.map((album: any) => (
                   <AlbumArtwork
                     key={album.name}
                     book={album}
                     className="w-[150px]"
-                    aspectRatio="square"
+                    aspectRatio="portrait"
                     width={150}
-                    height={150}
+                    height={300}
                   />
                 ))}
               </div>

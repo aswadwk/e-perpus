@@ -17,6 +17,7 @@ class BookController extends Controller
         return inertia('Books/Books', [
             'books' => Book::with(['category', 'publisher'])
                 ->orderBy('id', 'desc')->paginate(10),
+            'recommendations' => $this->getRecommendations(auth('web')->user()->id),
         ]);
     }
 
@@ -153,5 +154,51 @@ class BookController extends Controller
 
             throw $th;
         }
+    }
+
+
+    public function getRecommendations($userId, $topN = 10)
+    {
+        // Step 1: Collaborative Filtering
+        $borrowedBookIds = Borrow::where('user_id', $userId)
+            ->pluck('book_id')
+            ->toArray();
+
+        // mengambil buku yang dipinjam oleh user lain yang juga meminjam buku yang dipinjam oleh user saat ini
+        $collaborativeBooks = Borrow::select('book_id', DB::raw('COUNT(*) as times_borrowed'))
+            ->whereNotIn('book_id', $borrowedBookIds)
+            ->whereIn('user_id', function ($query) use ($borrowedBookIds) {
+                $query->select('user_id')
+                    ->from(with(new Borrow)->getTable())
+                    ->whereIn('book_id', $borrowedBookIds);
+            })
+            ->groupBy('book_id')
+            ->orderBy('times_borrowed', 'desc')
+            ->limit($topN)
+            ->pluck('book_id');
+
+        // Step 2: Content-based Filtering
+        $preferredGenres = Book::whereIn('id', $borrowedBookIds)
+            ->pluck('genre')
+            ->unique();
+
+        // mengambil buku berdasarkan genre yang disukai user
+        $contentBasedBooks = Book::whereIn('genre', $preferredGenres)
+            ->whereNotIn('id', $borrowedBookIds)
+            ->limit($topN)
+            ->pluck('id');
+
+        // Combine recommendations
+        $recommendedBooks = $collaborativeBooks->merge($contentBasedBooks)->unique()->take($topN);
+
+
+        if ($recommendedBooks->count() < $topN) {
+            $recommendedBooks = Book::whereNotIn('id', $borrowedBookIds)
+                ->orderBy('year_published', 'desc')
+                ->limit($topN)
+                ->pluck('id');
+        }
+
+        return Book::whereIn('id', $recommendedBooks)->get();
     }
 }

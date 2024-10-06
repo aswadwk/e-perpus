@@ -33,6 +33,9 @@ return new class extends Migration
             $table->integer('dislikes')->default(0);
             $table->integer('rating')->default(0);
             $table->integer('borrowed')->default(0);
+            $table->string('genre', 30)
+                ->nullable()
+                ->index();
 
             $table->softDeletes();
             $table->timestamps();

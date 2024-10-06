@@ -17,8 +17,6 @@ class DashboardController extends Controller
 
     public function homeAdmin()
     {
-
-
         return inertia('Dashboard/Dashboard', [
             "summaries" => [
                 "book" => Book::count(),

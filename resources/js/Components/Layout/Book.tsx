@@ -104,7 +104,7 @@ export default function BookItem({
       </SheetDemo>
 
       <div
-        className="overflow-hidden rounded-md cursor-pointer"
+        className="relative overflow-hidden rounded-md cursor-pointer"
         onClick={() => {
           setIsOpen({
             ...isOpen,
@@ -123,6 +123,10 @@ export default function BookItem({
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
           )}
         />
+        {/* genre */}
+        <div className="absolute top-0 right-0 p-2 text-xs font-semibold text-white bg-primary-500 rounded-bl-md">
+          {book.genre}
+        </div>
       </div>
 
       <div
