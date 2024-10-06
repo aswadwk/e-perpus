@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/Lib/utils";
@@ -9,7 +6,6 @@ import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
 } from "@/Components/ui/command";
@@ -19,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/Components/ui/popover";
 import { Label } from "../ui/label";
+import { useState } from "react";
 
 const frameworks = [
   {
@@ -66,8 +63,8 @@ export default function SelectInput({
   currentValue,
 }: Readonly<SelectInputProps>) {
   console.log("currentValue", currentValue);
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(currentValue || "");
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(currentValue || "");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

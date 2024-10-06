@@ -1,6 +1,8 @@
 import { Link, usePage } from "@inertiajs/react";
 import {
   Book,
+  Factory,
+  History,
   House,
   PanelLeftOpen,
   PanelRightOpen,
@@ -106,14 +108,14 @@ const SIDEBAR_ITEMS = [
   },
   {
     href: "/admin/publishers",
-    icon: <Users className="w-4 h-4" />,
+    icon: <Factory className="w-4 h-4" />,
     label: "Publisher",
     requiredRoles: ["admin"],
     darkMode: false,
   },
   {
     href: "/admin/histories",
-    icon: <Users className="w-4 h-4" />,
+    icon: <History className="w-4 h-4" />,
     label: "Peminjaman",
     requiredRoles: ["admin"],
     darkMode: false,

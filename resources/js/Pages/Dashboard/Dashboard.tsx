@@ -30,6 +30,14 @@ export const Dashboard = ({ summaries }: any) => {
             <div className="text-2xl font-bold">{summaries?.publisher}</div>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Pinjam</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{summaries?.borrow}</div>
+          </CardContent>
+        </Card>
       </div>
     </DefaultLayout>
   );

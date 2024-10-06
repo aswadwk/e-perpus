@@ -1,5 +1,3 @@
-"use client";
-
 import { useModal } from "./LoginContext";
 import { ModalLogin } from "./LoginModal";
 
