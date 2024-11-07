@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -11,7 +12,8 @@ class MemberController extends Controller
     public function index()
     {
         return inertia('Member/Member', [
-            'members' => User::where('role', 'user')
+            'members' => User::with(['grade'])
+                ->where('role', 'user')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10),
         ]);
@@ -19,7 +21,9 @@ class MemberController extends Controller
 
     public function create()
     {
-        return inertia('Member/Create');
+        return inertia('Member/Create', [
+            'grades' => Grade::orderBy('name', 'desc')->get(),
+        ]);
     }
 
     public function store(Request $request)
@@ -27,6 +31,7 @@ class MemberController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'grade_id' => ['required', 'integer', 'exists:grades,id'],
             'password' => ['required', 'string', 'min:8'],
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'nis' => ['required', 'string', 'max:255'],
@@ -42,6 +47,7 @@ class MemberController extends Controller
             'nis' => $request->nis,
             'address' => $request->address,
             'code' => rand(100000, 999999),
+            'grade_id' => $request->grade_id,
         ]);
 
         return redirect()->route('web.members.index');
@@ -51,6 +57,7 @@ class MemberController extends Controller
     {
         return inertia('Member/Edit', [
             'member' => User::findOrFail($id),
+            'grades' => Grade::orderBy('name', 'desc')->get()
         ]);
     }
 
@@ -59,6 +66,7 @@ class MemberController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+            'grade_id' => ['required', 'integer', 'exists:grades,id'],
             'password' => ['nullable', 'string', 'min:8'],
             'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $id],
             'nis' => ['required', 'string', 'max:255'],
@@ -74,6 +82,7 @@ class MemberController extends Controller
             'username' => $request->username,
             'nis' => $request->nis,
             'address' => $request->address,
+            'grade_id' => $request->grade_id,
         ]);
 
         return redirect()->route('web.members.index');

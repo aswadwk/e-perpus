@@ -37,7 +37,7 @@ import { DollarSignIcon, Edit, Eye, Plus, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
-const User = ({ members }: any) => {
+const Grade = ({ grades }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
     start_date: "",
@@ -88,38 +88,39 @@ const User = ({ members }: any) => {
     );
   }
 
-  function deleteMember(id: any) {
-    if (confirm("Are you sure you want to delete this member?")) {
-      destroy(route("web.members.destroy", id));
+  function deletePublisher(id: any) {
+    if (confirm("Are you sure you want to delete this publisher?")) {
+      destroy(route("web.grades.destroy", id));
     }
   }
 
   return (
     <DefaultLayout>
-      <Head title="Members" />
+      <Head title="Publisher" />
 
       <Card>
         <CardHeader>
-          <CardTitle>Pengguna</CardTitle>
+          <CardTitle>Kelas</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex gap-2">
-              <Input
-                placeholder="Search "
-                onChange={(e) => {
-                  setFilters({
-                    ...filters,
-                    search: e.target.value,
-                  });
-                }}
-                className="w-[150px] lg:w-[250px]"
-                value={filters.search}
-              />
-
+              <div>
+                <Input
+                  placeholder="Search "
+                  onChange={(e) => {
+                    setFilters({
+                      ...filters,
+                      search: e.target.value,
+                    });
+                  }}
+                  className="w-[150px] lg:w-[250px]"
+                  value={filters.search}
+                />
+              </div>
               {hasFilter() && (
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   onClick={() => {
                     setFilters({
                       ...filters,
@@ -137,10 +138,10 @@ const User = ({ members }: any) => {
               )}
             </div>
 
-            <Link href="/admin/members/create">
+            <Link href="/admin/grades/create">
               <Button>
                 <Plus />
-                Tambah Pengguna
+                Tambah Kelas
               </Button>
             </Link>
           </div>
@@ -149,51 +150,38 @@ const User = ({ members }: any) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Nama</TableHead>
-                  <TableHead>Kode</TableHead>
-                  <TableHead>NIM</TableHead>
-                  <TableHead>Kelas</TableHead>
-                  <TableHead>Alamat</TableHead>
-                  <TableHead>Ditambahkan pada</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead>Deskripsi</TableHead>
+                  <TableHead>Created At</TableHead>
+                  <TableHead className="text-center">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {members?.data?.map((user: any) => (
-                  <TableRow key={user.id}>
+                {grades?.data?.map((publisher: any) => (
+                  <TableRow key={publisher.id}>
                     <TableCell>
                       <div className="flex gap-2">
-                        <div>
-                          {user?.name ?? "Unknown"}
-                          <br />
-                          <span className="text-xs text-muted-foreground">
-                            {user?.email ?? "Unknown"}
-                          </span>
-                        </div>
+                        <div>{publisher?.name ?? "Unknown"}</div>
                       </div>
                     </TableCell>
-                    <TableCell>{user.code}</TableCell>
-                    <TableCell>{user.nis}</TableCell>
-                    <TableCell>{user?.grade?.name}</TableCell>
-                    <TableCell>{user.address}</TableCell>
-
+                    <TableCell>{publisher.description}</TableCell>
                     <TableCell className="text-nowrap">
-                      {dateHumanize(user.created_at)}
+                      {dateHumanize(publisher.created_at)}
                       <br />
                       <span className="text-xs text-muted-foreground">
-                        {toYearMonthDayHourMinute(user.created_at)}
+                        {toYearMonthDayHourMinute(publisher.created_at)}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <div className="flex gap-2 ">
+                      <div className="flex justify-center gap-2">
                         <Button variant="ghost">
-                          <Link href={route("web.members.edit", user.id)}>
+                          <Link href={route("web.grades.edit", publisher.id)}>
                             <Edit height={18} />
                           </Link>
                         </Button>
                         <Button
                           variant="ghost"
                           onClick={() => {
-                            deleteMember(user.id);
+                            deletePublisher(publisher.id);
                           }}
                         >
                           <Trash height={18} />
@@ -209,12 +197,12 @@ const User = ({ members }: any) => {
         <CardFooter>
           <div className="flex items-center justify-between w-full">
             <PaginateInfo
-              from={members.from}
-              to={members.to}
-              total={members.total}
+              from={grades.from}
+              to={grades.to}
+              total={grades.total}
             />
             <div>
-              <PaginationDemo links={members.links} />
+              <PaginationDemo links={grades.links} />
             </div>
           </div>
         </CardFooter>
@@ -223,4 +211,4 @@ const User = ({ members }: any) => {
   );
 };
 
-export default User;
+export default Grade;

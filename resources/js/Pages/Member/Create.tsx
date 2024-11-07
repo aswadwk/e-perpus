@@ -1,5 +1,6 @@
 import InputCustom from "@/Components/Input/InputCustom";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
+import SelectInput from "@/Components/SelectInput/SelectInput";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -11,10 +12,11 @@ import {
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = () => {
+const Create = ({ grades }: any) => {
   const { data, setData, post, errors, processing } = useForm({
     nis: "",
     name: "",
+    grade_id: "",
     username: "",
     email: "",
     password: "",
@@ -30,6 +32,7 @@ const Create = () => {
         setData({
           nis: "",
           name: "",
+          grade_id: "",
           username: "",
           email: "",
           password: "",
@@ -52,9 +55,9 @@ const Create = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <InputCustom
-                label="NIS"
+                label="NIM"
                 type="text"
-                placeholder="NIS"
+                placeholder="NIM"
                 value={data.nis}
                 onChange={(e) => setData("nis", e.target.value)}
                 error={errors.nis}
@@ -68,6 +71,19 @@ const Create = () => {
                 value={data.name}
                 onChange={(e) => setData("name", e.target.value)}
                 error={errors.name}
+              />
+            </div>
+            <div>
+              <SelectInput
+                label="Kelas"
+                placeholder="Kelas"
+                items={grades.map((grade: any) => ({
+                  value: grade.id.toString(),
+                  label: grade.name,
+                }))}
+                onChange={(value: any) => setData("grade_id", value)}
+                error={errors.grade_id}
+                currentValue={data.grade_id.toString()}
               />
             </div>
             <div>

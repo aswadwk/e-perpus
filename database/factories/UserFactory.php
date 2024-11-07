@@ -36,7 +36,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'nis' => fake()->unique()->numerify('##########'),
-            'code' => Str::random(4),
+            // ARB 001, ARB 002, ARB 003, ...
+            'code' => 'ARB ' . fake()->unique()->numerify('###'),
             'username' => fake()->userName(),
             'address' => fake()->address(),
             'password' => static::$password ??= Hash::make('password'),

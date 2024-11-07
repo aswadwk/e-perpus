@@ -25,6 +25,7 @@ class User extends Authenticatable
         'nis',
         'address',
         'code',
+        'grade_id',
     ];
 
     /**
@@ -48,5 +49,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
     }
 }

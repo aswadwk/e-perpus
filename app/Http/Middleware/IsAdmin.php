@@ -21,10 +21,10 @@ class IsAdmin
             return redirect()->route('login');
         }
 
-        if ($auth->role !== 'admin') {
-            return redirect()->route('web.home');
+        if ($auth->role === 'admin' || $auth->role === 'super admin') {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('web.home');
     }
 }

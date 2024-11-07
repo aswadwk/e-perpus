@@ -172,6 +172,7 @@ const Histories = ({ histories }: any) => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Peminjam</TableHead>
                 <TableHead>Judul</TableHead>
                 <TableHead>Author</TableHead>
                 <TableHead>Tanggal Pinjam</TableHead>
@@ -182,6 +183,13 @@ const Histories = ({ histories }: any) => {
             <TableBody>
               {histories.data?.map((item: any) => (
                 <TableRow key={item.id}>
+                  <TableCell className="font-medium">
+                    {item.user.name}
+                    <br />
+                    <span className="text-xs text-gray-500">
+                      {item.user.email}
+                    </span>
+                  </TableCell>
                   <TableCell className="font-medium">
                     {item.book.title}
                   </TableCell>

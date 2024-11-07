@@ -1,1 +1,0 @@
-import{h as u}from"./button-CoqDk6re.js";function t(r){return!r||r===null?"-":(r=new Date(r),u(r).format("YYYY-MM-DD HH:mm"))}function e(r,n="-"){return!r||r===null?n:(r=new Date(r),isNaN(r.getTime())?"":u(r).format("YYYY-MM-DD"))}function i(r){return!r||r===null?"-":u(r).fromNow()}function f(r){for(const n in r)r[n]===""&&delete r[n];return r}export{t as a,i as d,f as r,e as t};

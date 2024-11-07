@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('nis')->nullable();
             $table->string('code')->nullable();
 
+            $table->bigInteger('grade_id')->nullable();
+
+            $table->softDeletes();
             $table->timestamps();
         });
 

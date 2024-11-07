@@ -12,7 +12,6 @@ import {
   Users,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
-import { ReactNode } from "react";
 
 interface SidebarProps {
   sidebarExpanded: boolean;
@@ -30,6 +29,8 @@ export default function Sidebar({
   setSidebarExpanded,
 }: Readonly<SidebarProps>) {
   const { url, props }: any = usePage();
+
+  console.log(props?.auth?.role);
 
   const isActive = (path: string) => {
     return url.replace("/admin", "").startsWith(path.replace("/admin", ""));
@@ -96,42 +97,49 @@ const SIDEBAR_ITEMS = [
     href: "/admin/home",
     icon: <House className="w-4 h-4" />,
     label: "Beranda",
-    requiredRoles: ["admin", "user"],
+    requiredRoles: ["super admin", "admin", "user"],
+    darkMode: false,
+  },
+  {
+    href: "/admin/admins",
+    icon: <Users className="w-4 h-4" />,
+    label: "Admin",
+    requiredRoles: ["super admin"],
+    darkMode: false,
+  },
+  {
+    href: "/admin/grades",
+    icon: <Users className="w-4 h-4" />,
+    label: "Kelas",
+    requiredRoles: ["super admin", "admin"],
     darkMode: false,
   },
   {
     href: "/admin/members",
     icon: <Users className="w-4 h-4" />,
     label: "Pengguna",
-    requiredRoles: ["admin"],
+    requiredRoles: ["super admin", "admin"],
     darkMode: false,
   },
   {
     href: "/admin/publishers",
     icon: <Factory className="w-4 h-4" />,
     label: "Publisher",
-    requiredRoles: ["admin"],
+    requiredRoles: ["super admin", "admin"],
     darkMode: false,
   },
   {
     href: "/admin/histories",
     icon: <History className="w-4 h-4" />,
     label: "Peminjaman",
-    requiredRoles: ["admin"],
+    requiredRoles: ["super admin", "admin"],
     darkMode: false,
   },
   {
     href: "/admin/books",
     icon: <Book className="w-4 h-4" />,
     label: "Buku",
-    requiredRoles: ["admin", "user"],
+    requiredRoles: ["super admin", "admin", "user"],
     darkMode: false,
   },
-  // {
-  //   href: "/admin/reports",
-  //   icon: <Users className="w-4 h-4" />,
-  //   label: "Reports",
-  //   requiredRoles: ["admin"],
-  //   darkMode: false,
-  // },
 ];

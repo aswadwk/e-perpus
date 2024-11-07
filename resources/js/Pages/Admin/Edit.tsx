@@ -1,6 +1,5 @@
 import InputCustom from "@/Components/Input/InputCustom";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
-import SelectInput from "@/Components/SelectInput/SelectInput";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -12,31 +11,23 @@ import {
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
-const Edit = ({ member, grades }: any) => {
+const Edit = ({ member }: any) => {
   const { data, setData, put, errors, processing } = useForm({
-    nis: member.nis || "",
     name: member.name || "",
-    username: member.username || "",
     email: member.email || "",
     password: "",
-    address: member.address || "",
-    grade_id: member.grade_id || "",
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    put(route("web.members.update", member.id), {
+    put(route("web.admins.update", member.id), {
       preserveScroll: true,
       onSuccess: () => {
         setData({
-          nis: "",
           name: "",
-          username: "",
           email: "",
           password: "",
-          address: "",
-          grade_id: "",
         });
       },
     });
@@ -55,16 +46,6 @@ const Edit = ({ member, grades }: any) => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <InputCustom
-                label="NIM"
-                type="text"
-                placeholder="NIM"
-                value={data.nis}
-                onChange={(e) => setData("nis", e.target.value)}
-                error={errors.nis}
-              />
-            </div>
-            <div>
-              <InputCustom
                 label="Name"
                 type="text"
                 placeholder="Name"
@@ -73,29 +54,7 @@ const Edit = ({ member, grades }: any) => {
                 error={errors.name}
               />
             </div>
-            <div>
-              <SelectInput
-                label="Kelas"
-                placeholder="Kelas"
-                items={grades.map((grade: any) => ({
-                  value: grade.id.toString(),
-                  label: grade.name,
-                }))}
-                onChange={(value: any) => setData("grade_id", value)}
-                error={errors.grade_id}
-                currentValue={data.grade_id.toString()}
-              />
-            </div>
-            <div>
-              <InputCustom
-                label="Username"
-                type="text"
-                placeholder="Username"
-                value={data.username}
-                onChange={(e) => setData("username", e.target.value)}
-                error={errors.username}
-              />
-            </div>
+
             <div>
               <InputCustom
                 label="Email"
@@ -114,17 +73,6 @@ const Edit = ({ member, grades }: any) => {
                 value={data.password}
                 onChange={(e) => setData("password", e.target.value)}
                 error={errors.password}
-              />
-            </div>
-
-            <div>
-              <InputCustom
-                label="Address"
-                type="text"
-                placeholder="Address"
-                value={data.address}
-                onChange={(e) => setData("address", e.target.value)}
-                error={errors.address}
               />
             </div>
           </div>

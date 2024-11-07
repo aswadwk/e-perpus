@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\BookController;
 use App\Http\Controllers\Web\DashboardController;
@@ -35,6 +37,17 @@ Route::controller(DashboardController::class)
         Route::get('/', 'index')->name('web.home');
     });
 
+Route::controller(AdminController::class)
+    ->middleware("is.admin")
+    ->group(function () {
+        Route::get('/admin/admins', 'index')->name('web.admins.index');
+        Route::get('/admin/admins/create', 'create')->name('web.admins.create');
+        Route::post('/admin/admins/store', 'store')->name('web.admins.store');
+        Route::get('/admin/admins/{id}/edit', 'edit')->name('web.admins.edit');
+        Route::put('/admin/admins/{id}/update', 'update')->name('web.admins.update');
+        Route::delete('/admin/admins/{id}/delete', 'destroy')->name('web.admins.destroy');
+    });
+
 Route::controller(MemberController::class)
     ->middleware("is.admin")
     ->group(function () {
@@ -44,6 +57,17 @@ Route::controller(MemberController::class)
         Route::get('/admin/members/{id}/edit', 'edit')->name('web.members.edit');
         Route::put('/admin/members/{id}/update', 'update')->name('web.members.update');
         Route::delete('/admin/members/{id}/delete', 'destroy')->name('web.members.destroy');
+    });
+
+Route::controller(GradeController::class)
+    ->middleware("is.admin")
+    ->group(function () {
+        Route::get('/admin/grades', 'index')->name('web.grades.index');
+        Route::get('/admin/grades/create', 'create')->name('web.grades.create');
+        Route::post('/admin/grades/store', 'store')->name('web.grades.store');
+        Route::get('/admin/grades/{id}/edit', 'edit')->name('web.grades.edit');
+        Route::put('/admin/grades/{id}/update', 'update')->name('web.grades.update');
+        Route::delete('/admin/grades/{id}/delete', 'destroy')->name('web.grades.destroy');
     });
 
 Route::controller(PublisherController::class)

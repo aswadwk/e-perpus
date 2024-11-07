@@ -1,11 +1,7 @@
-import AvatarCustom from "@/Components/Avatar/Avatar";
-import DatePickerWithRange from "@/Components/DatePicker/DateRangePicker";
-import InputCheckBox from "@/Components/Input/InputCheckBox";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
-import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -90,13 +86,13 @@ const User = ({ members }: any) => {
 
   function deleteMember(id: any) {
     if (confirm("Are you sure you want to delete this member?")) {
-      destroy(route("web.members.destroy", id));
+      destroy(route("web.admins.destroy", id));
     }
   }
 
   return (
     <DefaultLayout>
-      <Head title="Members" />
+      <Head title="Admin" />
 
       <Card>
         <CardHeader>
@@ -137,7 +133,7 @@ const User = ({ members }: any) => {
               )}
             </div>
 
-            <Link href="/admin/members/create">
+            <Link href="/admin/admins/create">
               <Button>
                 <Plus />
                 Tambah Pengguna
@@ -149,11 +145,7 @@ const User = ({ members }: any) => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Nama</TableHead>
-                  <TableHead>Kode</TableHead>
-                  <TableHead>NIM</TableHead>
-                  <TableHead>Kelas</TableHead>
-                  <TableHead>Alamat</TableHead>
-                  <TableHead>Ditambahkan pada</TableHead>
+                  <TableHead>Email</TableHead>
                   <TableHead>Aksi</TableHead>
                 </TableRow>
               </TableHeader>
@@ -171,11 +163,6 @@ const User = ({ members }: any) => {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>{user.code}</TableCell>
-                    <TableCell>{user.nis}</TableCell>
-                    <TableCell>{user?.grade?.name}</TableCell>
-                    <TableCell>{user.address}</TableCell>
-
                     <TableCell className="text-nowrap">
                       {dateHumanize(user.created_at)}
                       <br />
@@ -186,7 +173,7 @@ const User = ({ members }: any) => {
                     <TableCell>
                       <div className="flex gap-2 ">
                         <Button variant="ghost">
-                          <Link href={route("web.members.edit", user.id)}>
+                          <Link href={route("web.admins.edit", user.id)}>
                             <Edit height={18} />
                           </Link>
                         </Button>
