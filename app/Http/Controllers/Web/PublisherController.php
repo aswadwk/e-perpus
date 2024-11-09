@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 
 class PublisherController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Publisher/Publisher', [
             'publishers' => Publisher::orderBy('id', 'desc')
+                ->when($request->search, function ($query) use ($request) {
+                    $query->where('name', 'like', "%$request->search%");
+                })
                 ->paginate(10)
         ]);
     }

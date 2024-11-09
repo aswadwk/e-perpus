@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -20,7 +22,7 @@ class AuthController extends Controller
     public function doLogin(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -55,5 +57,41 @@ class AuthController extends Controller
     public function setting()
     {
         return inertia('Setting/Setting');
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name'         => ['nullable', 'string', 'max:255', 'min:3'],
+            'old_password' => ['nullable', 'string'],
+            'password'     => ['nullable', 'string', 'min:8'],
+        ]);
+
+        // check if all null
+        if (!$request->filled('name') && !$request->filled('old_password') && !$request->filled('password')) {
+            return redirect()->back();
+        }
+
+        $user = auth('web')->user();
+
+        if ($request->filled('name')) {
+            if ($user->name !== $request->name) {
+                $user->name = $request->name;
+            }
+
+            User::where('id', $user->id)->update(['name' => $request->name]);
+        }
+
+        if ($request->filled('old_password') && $request->filled('password')) {
+            if (Hash::check($request->old_password, $user->password)) {
+                User::where('id', $user->id)->update(['password' => Hash::make($request->password)]);
+            } else {
+                return back()->withErrors([
+                    'old_password' => 'The provided password does not match our records.',
+                ]);
+            }
+        }
+
+        return redirect()->back();
     }
 }

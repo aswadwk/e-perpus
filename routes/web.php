@@ -24,6 +24,7 @@ Route::controller(AuthController::class)
     ->group(function () {
         Route::post('auth/logout', 'doLogout')->name('web.auth.logout');
         Route::get('/setting', 'setting')->name('web.auth.setting');
+        Route::post('/setting/update', 'update')->name('web.auth.update');
     });
 
 Route::controller(DashboardController::class)

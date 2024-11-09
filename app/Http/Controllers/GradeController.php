@@ -10,7 +10,11 @@ class GradeController extends Controller
     public function index(Request $request)
     {
         return inertia('Grade/Grade', [
-            'grades' => Grade::orderBy('created_at', 'desc')->paginate(10),
+            'grades' => Grade::orderBy('created_at', 'desc')
+                ->when($request->search, function ($query, $search) {
+                    return $query->where('name', 'like', "%$search%");
+                })
+                ->paginate(10),
         ]);
     }
 

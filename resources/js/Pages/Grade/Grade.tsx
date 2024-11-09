@@ -40,10 +40,7 @@ import { toast } from "sonner";
 const Grade = ({ grades }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
-    start_date: "",
-    end_date: "",
     search: "",
-    subscription: "",
     with_trashed: false,
   });
 
@@ -55,17 +52,17 @@ const Grade = ({ grades }: any) => {
     debounce((searchFilter: any) => {
       let newFilter = removeEmptyValues({
         ...searchFilter,
-        start_date: toYearMonthDay(searchFilter.start_date, ""),
-        end_date: toYearMonthDay(searchFilter.end_date, ""),
       });
 
-      // router.get(
-      //   route("v1.admin.users"),
-      //   {
-      //     ...newFilter,
-      //   },
-      //   { preserveState: true, preserveScroll: "errors" }
-      // );
+      console.log(newFilter);
+
+      router.get(
+        route("web.grades.index"),
+        {
+          ...newFilter,
+        },
+        { preserveState: true, preserveScroll: "errors" }
+      );
     }, 500)
   ).current;
 
@@ -79,13 +76,7 @@ const Grade = ({ grades }: any) => {
   }, [filters]);
 
   function hasFilter() {
-    return (
-      filters.search ||
-      filters.start_date ||
-      filters.end_date ||
-      filters.subscription ||
-      filters.with_trashed
-    );
+    return filters.search || filters.with_trashed;
   }
 
   function deletePublisher(id: any) {
@@ -125,9 +116,6 @@ const Grade = ({ grades }: any) => {
                     setFilters({
                       ...filters,
                       search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
                       per_page: "",
                       with_trashed: false,
                     });

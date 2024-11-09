@@ -40,10 +40,7 @@ import { toast } from "sonner";
 const User = ({ members }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
-    start_date: "",
-    end_date: "",
     search: "",
-    subscription: "",
     with_trashed: false,
   });
 
@@ -55,17 +52,15 @@ const User = ({ members }: any) => {
     debounce((searchFilter: any) => {
       let newFilter = removeEmptyValues({
         ...searchFilter,
-        start_date: toYearMonthDay(searchFilter.start_date, ""),
-        end_date: toYearMonthDay(searchFilter.end_date, ""),
       });
 
-      // router.get(
-      //   route("v1.admin.users"),
-      //   {
-      //     ...newFilter,
-      //   },
-      //   { preserveState: true, preserveScroll: "errors" }
-      // );
+      router.get(
+        route("web.members.index"),
+        {
+          ...newFilter,
+        },
+        { preserveState: true, preserveScroll: "errors" }
+      );
     }, 500)
   ).current;
 
@@ -79,13 +74,7 @@ const User = ({ members }: any) => {
   }, [filters]);
 
   function hasFilter() {
-    return (
-      filters.search ||
-      filters.start_date ||
-      filters.end_date ||
-      filters.subscription ||
-      filters.with_trashed
-    );
+    return filters.search || filters.with_trashed;
   }
 
   function deleteMember(id: any) {
@@ -119,7 +108,7 @@ const User = ({ members }: any) => {
 
               {hasFilter() && (
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   onClick={() => {
                     setFilters({
                       ...filters,

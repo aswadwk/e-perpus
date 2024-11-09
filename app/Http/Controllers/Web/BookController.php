@@ -23,10 +23,13 @@ class BookController extends Controller
         ]);
     }
 
-    public function adminBook()
+    public function adminBook(Request $request)
     {
         return inertia('Books/AdminBook', [
             'books' => Book::with(['category', 'publisher'])
+                ->when($request->search, function ($query) use ($request) {
+                    $query->where('title', 'like', "%$request->search%");
+                })
                 ->orderBy('id', 'desc')->paginate(10),
         ]);
     }

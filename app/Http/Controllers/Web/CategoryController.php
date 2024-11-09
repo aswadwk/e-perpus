@@ -9,10 +9,12 @@ use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Category/Category', [
-            'categories' => Category::orderBy('created_at', 'desc')->paginate(10),
+            'categories' => Category::when($request->search, function ($query, $search) {
+                return $query->where('name', 'like', "%$search%");
+            })->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }
 

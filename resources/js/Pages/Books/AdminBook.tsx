@@ -65,10 +65,7 @@ import { toast } from "sonner";
 const AdminBooks = ({ books }: any) => {
   const [filters, setFilters] = useState<any>({
     per_page: 10,
-    start_date: "",
-    end_date: "",
     search: "",
-    subscription: "",
     with_trashed: false,
   });
 
@@ -98,13 +95,13 @@ const AdminBooks = ({ books }: any) => {
         end_date: toYearMonthDay(searchFilter.end_date, ""),
       });
 
-      // router.get(
-      //   route("v1.admin.users"),
-      //   {
-      //     ...newFilter,
-      //   },
-      //   { preserveState: true, preserveScroll: "errors" }
-      // );
+      router.get(
+        route("web.books.admin"),
+        {
+          ...newFilter,
+        },
+        { preserveState: true, preserveScroll: "errors" }
+      );
     }, 500)
   ).current;
 
@@ -118,13 +115,7 @@ const AdminBooks = ({ books }: any) => {
   }, [filters]);
 
   function hasFilter() {
-    return (
-      filters.search ||
-      filters.start_date ||
-      filters.end_date ||
-      filters.subscription ||
-      filters.with_trashed
-    );
+    return filters.search || filters.with_trashed;
   }
 
   function deleteBook(id: any) {
@@ -200,14 +191,11 @@ const AdminBooks = ({ books }: any) => {
             <div className="flex items-center justify-end space-x-2">
               {hasFilter() && (
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   onClick={() => {
                     setFilters({
                       ...filters,
                       search: "",
-                      start_date: "",
-                      end_date: "",
-                      subscription: "",
                       per_page: "",
                       with_trashed: false,
                     });
@@ -255,9 +243,14 @@ const AdminBooks = ({ books }: any) => {
                   <TableRow key={book.id}>
                     <TableCell>
                       <img src={imagePath(book?.cover)} alt={book?.title} />
-                      {/* {book?.title ?? "Unknown"} */}
                     </TableCell>
-                    <TableCell>{book?.title ?? "Unknown"}</TableCell>
+                    <TableCell>
+                      {book?.title ?? "Unknown"}
+                      <br />
+                      <span className="text-xs text-muted-foreground">
+                        {book?.category?.name}
+                      </span>
+                    </TableCell>
                     <TableCell>{book.author}</TableCell>
                     <TableCell>
                       {book?.category?.name}
