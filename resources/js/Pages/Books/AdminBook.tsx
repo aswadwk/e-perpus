@@ -40,7 +40,7 @@ import {
   TableRow,
 } from "@/Components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { cn } from "@/Lib/utils";
+import { cn, imagePath } from "@/Lib/utils";
 import {
   dateHumanize,
   removeEmptyValues,
@@ -240,12 +240,12 @@ const AdminBooks = ({ books }: any) => {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead></TableHead>
                   <TableHead>Title</TableHead>
                   <TableHead>Author</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>ISBN</TableHead>
                   <TableHead>Stock</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>Created At</TableHead>
                   <TableHead className="text-center">Action</TableHead>
                 </TableRow>
@@ -254,13 +254,10 @@ const AdminBooks = ({ books }: any) => {
                 {books?.data?.map((book: any) => (
                   <TableRow key={book.id}>
                     <TableCell>
-                      <div className="flex gap-2">
-                        <div>
-                          {book?.id}
-                          {book?.title ?? "Unknown"}
-                        </div>
-                      </div>
+                      <img src={imagePath(book?.cover)} alt={book?.title} />
+                      {/* {book?.title ?? "Unknown"} */}
                     </TableCell>
+                    <TableCell>{book?.title ?? "Unknown"}</TableCell>
                     <TableCell>{book.author}</TableCell>
                     <TableCell>
                       {book?.category?.name}
@@ -271,7 +268,6 @@ const AdminBooks = ({ books }: any) => {
                     </TableCell>
                     <TableCell>{book.isbn}</TableCell>
                     <TableCell>{book.stock}</TableCell>
-                    <TableCell>{book.status}</TableCell>
                     <TableCell className="text-nowrap">
                       {dateHumanize(book.created_at)}
                       <br />

@@ -9,6 +9,8 @@ use App\Models\Category;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
@@ -33,8 +35,8 @@ class BookController extends Controller
     {
         $request->validate([
             'return_date' => ['required', 'date', 'after:today'],
-            'fine' => ['required', 'boolean'],
-            'notes' => ['nullable', 'string', 'max:255'],
+            'fine'        => ['required', 'boolean'],
+            'notes'       => ['nullable', 'string', 'max:255'],
         ]);
 
         $book = Book::find($id);
@@ -44,13 +46,13 @@ class BookController extends Controller
                 DB::beginTransaction();
 
                 Borrow::create([
-                    'book_id' => $book->id,
-                    'user_id' => auth('web')->user()->id,
+                    'book_id'     => $book->id,
+                    'user_id'     => auth('web')->user()->id,
                     'borrow_date' => now(),
                     'return_date' => $request->return_date,
-                    'notes' => $request->notes ?? null,
-                    'fine' => $request->fine ?? 0,
-                    'status' => 'pending',
+                    'notes'       => $request->notes ?? null,
+                    'fine'        => $request->fine ?? 0,
+                    'status'      => 'pending',
                 ]);
 
                 DB::commit();
@@ -77,28 +79,70 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => ['nullable', 'string', 'unique:books'],
-            'title' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'publisher_id' => ['required', 'exists:publishers,id'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'is_available' => ['nullable', 'boolean'],
-            'isbn' => ['required', 'string'],
-            'author' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
+            'code'           => ['nullable', 'string', 'unique:books'],
+            'title'          => ['required', 'string'],
+            'category_id'    => ['required', 'exists:categories,id'],
+            'publisher_id'   => ['required', 'exists:publishers,id'],
+            'stock'          => ['required', 'integer', 'min:0'],
+            'price'          => ['required', 'numeric', 'min:0'],
+            'is_available'   => ['nullable', 'boolean'],
+            'isbn'           => ['required', 'string'],
+            'author'         => ['required', 'string'],
+            'description'    => ['nullable', 'string'],
             'year_published' => ['required', 'date_format:Y'],
+            'cover'          => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:10048'],
         ]);
 
         try {
             $slug = str()->slug($request->title);
 
             $request->merge([
-                'slug' => $slug,
+                'slug'         => $slug,
                 'is_available' => $request->is_available ?? true,
             ]);
 
-            Book::create($request->all());
+            // check if isbn already exists
+            $isbn = Book::where('isbn', $request->isbn)->exists();
+
+            if ($isbn) {
+                throw ValidationException::withMessages([
+                    'isbn' => 'ISBN already exists',
+                ]);
+            }
+
+            // check if name already exists
+            $title = Book::where('title', $request->title)->exists();
+
+            if ($title) {
+                throw ValidationException::withMessages([
+                    'title' => 'Title already exists',
+                ]);
+            }
+
+            if ($request->hasFile('cover')) {
+                // upload image
+                $coverPath = $request->file('cover')->store('public/books');
+
+                $request->merge([
+                    'path_cover' => url('/') . Storage::url($coverPath),
+                ]);
+            }
+
+            Book::create([
+                'code'           => $request->code,
+                'title'          => $request->title,
+                'category_id'    => $request->category_id,
+                'publisher_id'   => $request->publisher_id,
+                'stock'          => $request->stock,
+                'price'          => $request->price,
+                'is_available'   => $request->is_available,
+                'isbn'           => $request->isbn,
+                'author'         => $request->author,
+                'description'    => $request->description,
+                'year_published' => $request->year_published,
+                'cover'          => $request->path_cover,
+                'slug'           => str()->slug($request->title),
+            ]);
 
             return redirect()->route('web.books.admin');
         } catch (\Throwable $th) {
@@ -110,7 +154,7 @@ class BookController extends Controller
     public function edit($id)
     {
         return inertia('Books/Edit', [
-            'book' => Book::with(['category', 'publisher'])->find($id),
+            'book'       => Book::with(['category', 'publisher'])->find($id),
             'categories' => Category::all(),
             'publishers' => Publisher::all(),
         ]);
@@ -119,22 +163,70 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'code' => ['nullable', 'string', 'unique:books,code,' . $id],
-            'title' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'publisher_id' => ['required', 'exists:publishers,id'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'is_available' => ['nullable', 'boolean'],
-            'isbn' => ['required', 'string'],
-            'author' => ['required', 'string'],
-            'description' => ['nullable', 'string'],
+            'code'           => ['nullable', 'string', 'unique:books,code,' . $id],
+            'title'          => ['required', 'string'],
+            'category_id'    => ['required', 'exists:categories,id'],
+            'publisher_id'   => ['required', 'exists:publishers,id'],
+            'stock'          => ['required', 'integer', 'min:0'],
+            'price'          => ['required', 'numeric', 'min:0'],
+            'is_available'   => ['nullable', 'boolean'],
+            'isbn'           => ['required', 'string'],
+            'author'         => ['required', 'string'],
+            'description'    => ['nullable', 'string'],
             'year_published' => ['required', 'date_format:Y'],
+            'cover'          => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:10048'],
         ]);
 
         try {
 
-            Book::find($id)->update($request->all());
+            // check if book exists
+            $book = Book::findOrFail($id);
+
+            // check if isbn already exists
+            $isbn = Book::where('isbn', $request->isbn)->where('id', '!=', $id)->exists();
+
+            if ($isbn) {
+                throw ValidationException::withMessages([
+                    'isbn' => 'ISBN already exists',
+                ]);
+            }
+
+            // check if name already exists
+            $title = Book::where('title', $request->title)->where('id', '!=', $id)->exists();
+
+            if ($title) {
+                throw ValidationException::withMessages([
+                    'title' => 'Title already exists',
+                ]);
+            }
+
+            // check if cover is updated
+            if ($request->hasFile('cover')) {
+
+                $cover = $request->file('cover');
+
+                $coverPath = $cover->store('public/books');
+
+                $request->merge([
+                    // add base url
+                    'new_cover' => url('/') . Storage::url($coverPath),
+                ]);
+            }
+
+            Book::find($id)->update([
+                'code'           => $request->code ?? $book->code,
+                'title'          => $request->title ?? $book->title,
+                'category_id'    => $request->category_id ?? $book->category_id,
+                'publisher_id'   => $request->publisher_id ?? $book->publisher_id,
+                'stock'          => $request->stock ?? $book->stock,
+                'price'          => $request->price ?? $book->price,
+                'is_available'   => $request->is_available ?? true,
+                'isbn'           => $request->isbn ?? $book->isbn,
+                'author'         => $request->author ?? $book->author,
+                'description'    => $request->description ?? $book->description,
+                'year_published' => $request->year_published ?? $book->year_published,
+                'cover'          => $request->new_cover ?? $book->cover,
+            ]);
 
             return redirect()->route('web.books.admin');
         } catch (\Throwable $th) {
@@ -155,7 +247,6 @@ class BookController extends Controller
             throw $th;
         }
     }
-
 
     public function getRecommendations($userId, $topN = 10)
     {
@@ -190,7 +281,6 @@ class BookController extends Controller
 
         // Combine recommendations
         $recommendedBooks = $collaborativeBooks->merge($contentBasedBooks)->unique()->take($topN);
-
 
         if ($recommendedBooks->count() < $topN) {
             $recommendedBooks = Book::whereNotIn('id', $borrowedBookIds)

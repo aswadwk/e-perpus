@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\BookController;
+use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\HistoryController;
 use App\Http\Controllers\Web\MemberController;
@@ -69,6 +70,18 @@ Route::controller(GradeController::class)
         Route::put('/admin/grades/{id}/update', 'update')->name('web.grades.update');
         Route::delete('/admin/grades/{id}/delete', 'destroy')->name('web.grades.destroy');
     });
+
+Route::controller(CategoryController::class)
+    ->middleware("is.admin")
+    ->group(function () {
+        Route::get('/admin/categories', 'index')->name('web.categories.index');
+        Route::get('/admin/categories/create', 'create')->name('web.categories.create');
+        Route::post('/admin/categories/store', 'store')->name('web.categories.store');
+        Route::get('/admin/categories/{id}/edit', 'edit')->name('web.categories.edit');
+        Route::put('/admin/categories/{id}/update', 'update')->name('web.categories.update');
+        Route::delete('/admin/categories/{id}/delete', 'destroy')->name('web.categories.destroy');
+    });
+
 
 Route::controller(PublisherController::class)
     ->middleware("is.admin")

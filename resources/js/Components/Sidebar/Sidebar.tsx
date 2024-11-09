@@ -115,6 +115,13 @@ const SIDEBAR_ITEMS = [
     darkMode: false,
   },
   {
+    href: "/admin/categories",
+    icon: <Users className="w-4 h-4" />,
+    label: "Kategori",
+    requiredRoles: ["super admin", "admin"],
+    darkMode: false,
+  },
+  {
     href: "/admin/members",
     icon: <Users className="w-4 h-4" />,
     label: "Pengguna",

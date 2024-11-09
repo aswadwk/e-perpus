@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/Components/ui/card";
+import { Input } from "@/Components/ui/input";
 import { useForm } from "@inertiajs/react";
 import React from "react";
 
@@ -20,7 +21,7 @@ const Create = ({ categories, publishers }: any) => {
     category_id: "",
     publisher_id: "",
     isbn: "",
-    cover: "",
+    cover: null,
     year_published: "",
     stock: "",
     price: "",
@@ -31,15 +32,13 @@ const Create = ({ categories, publishers }: any) => {
     e.preventDefault();
 
     post(route("web.books.store"), {
+      forceFormData: true,
       preserveScroll: true,
       onSuccess: () => {
         reset();
       },
     });
   }
-
-  console.log(categories);
-  console.log(data);
 
   return (
     <DefaultLayout>
@@ -145,6 +144,15 @@ const Create = ({ categories, publishers }: any) => {
                 value={data.description}
                 onChange={(e) => setData("description", e.target.value)}
                 error={errors.description}
+              />
+            </div>
+            <div>
+              <InputCustom
+                label="Cover"
+                type="file"
+                placeholder="Cover"
+                onChange={(e) => setData("cover", e.target.files[0])}
+                error={errors.cover}
               />
             </div>
           </div>

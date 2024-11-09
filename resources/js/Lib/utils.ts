@@ -90,3 +90,18 @@ export function updateStatus(status: string): string {
       return status;
   }
 }
+
+// check if path not include http or https
+// add base url to path
+
+export function imagePath(path: string) {
+  if (!path) {
+    return "";
+  }
+
+  if (!path.includes('http')) {
+    return `${window.location.origin}/storage/${path}`;
+  }
+
+  return path;
+}

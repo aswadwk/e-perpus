@@ -14,13 +14,14 @@ import { useForm } from "@inertiajs/react";
 import React from "react";
 
 const Edit = ({ book, categories, publishers }: any) => {
-  const { data, setData, put, errors, processing, reset } = useForm({
+  const { data, setData, post, errors, processing, reset } = useForm({
+    _method: "put",
     title: book.title || "",
     author: book.author || "",
     category_id: book.category_id || "",
     publisher_id: book.publisher_id || "",
     isbn: book.isbn || "",
-    cover: book.cover || "",
+    cover: null,
     year_published: book.year_published || "",
     stock: book.stock || "",
     price: book.price || "",
@@ -30,7 +31,9 @@ const Edit = ({ book, categories, publishers }: any) => {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    put(route("web.books.update", book.id), {
+    post(route("web.books.update", book.id), {
+      method: "put",
+      forceFormData: true,
       preserveScroll: true,
       onSuccess: () => {
         reset();
@@ -145,6 +148,15 @@ const Edit = ({ book, categories, publishers }: any) => {
                 value={data.description}
                 onChange={(e) => setData("description", e.target.value)}
                 error={errors.description}
+              />
+            </div>
+            <div>
+              <InputCustom
+                label="Cover"
+                type="file"
+                placeholder="Cover"
+                onChange={(e) => setData("cover", e.target.files[0])}
+                error={errors.cover}
               />
             </div>
           </div>

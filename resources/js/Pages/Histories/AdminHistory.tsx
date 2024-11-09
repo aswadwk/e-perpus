@@ -300,7 +300,7 @@ function FormUpdateStatus({ onSubmit, form }: any) {
             label="Status"
             placeholder="Select status..."
             items={statuses}
-            value={form.data.status}
+            currentValue={form.data.status}
           />
         </div>
         {/* <div className="flex flex-col gap-2">

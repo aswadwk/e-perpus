@@ -19,7 +19,7 @@ export default function InputCustom({
   label?: string;
   type: string;
   placeholder: string;
-  value: string;
+  value?: string;
   error: string | undefined | any;
   isDisabled?: boolean;
   id?: string;
