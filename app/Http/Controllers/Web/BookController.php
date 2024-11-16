@@ -273,11 +273,11 @@ class BookController extends Controller
 
         // Step 2: Content-based Filtering
         $preferredGenres = Book::whereIn('id', $borrowedBookIds)
-            ->pluck('genre')
+            ->pluck('category_id')
             ->unique();
 
         // mengambil buku berdasarkan genre yang disukai user
-        $contentBasedBooks = Book::whereIn('genre', $preferredGenres)
+        $contentBasedBooks = Book::whereIn('category_id', $preferredGenres)
             ->whereNotIn('id', $borrowedBookIds)
             ->limit($topN)
             ->pluck('id');
@@ -292,6 +292,8 @@ class BookController extends Controller
                 ->pluck('id');
         }
 
-        return Book::whereIn('id', $recommendedBooks)->get();
+        return Book::with(['category', 'publisher'])
+            ->whereIn('id', $recommendedBooks)
+            ->get();
     }
 }

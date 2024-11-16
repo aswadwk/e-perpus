@@ -52,6 +52,7 @@ type SelectInputProps = {
   onChange: (value: string) => void;
   error?: string;
   currentValue: string;
+  isRequired?: boolean;
 };
 
 export default function SelectInput({
@@ -61,6 +62,7 @@ export default function SelectInput({
   onChange,
   error,
   currentValue,
+  isRequired,
 }: Readonly<SelectInputProps>) {
   console.log("currentValue", currentValue);
   const [open, setOpen] = useState(false);
@@ -68,7 +70,12 @@ export default function SelectInput({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <Label className="mb-4">{label}</Label>
+      <Label className="mb-4">
+        {label}
+        {isRequired && (
+          <span className="text-xs text-red-500"> * Wajib diisi</span>
+        )}
+      </Label>
       <PopoverTrigger asChild>
         <Button
           variant="outline"

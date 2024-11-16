@@ -12,16 +12,58 @@ class GradeSeeder extends Seeder
      */
     public function run(): void
     {
+        // 1A D4 Adminisistrasi Bisnis
+        // 1B D4 Adminisistrasi Bisnis
+        // 1C D4 Adminisistrasi Bisnis
+        // 1D D4 Adminisistrasi Bisnis
+        // 1E D4 Adminisistrasi Bisnis
+
+        // 1A D3 Adminisistrasi Bisnis
+        // 1B D3 Adminisistrasi Bisnis
+        // 1C D3 Adminisistrasi Bisnis
+        // 1D D3 Adminisistrasi Bisnis
+        // 1E D3 Adminisistrasi Bisnis
+
+        // 1A D4 Administrasi Perkantoran Digital
+        // 1B D4 Administrasi Perkantoran Digital
+        // 1C D4 Administrasi Perkantoran Digital
+        // 1D D4 Administrasi Perkantoran Digital
+        // 1E D4 Administrasi Perkantoran Digital
+
+        // 1A D4 Bispro
+        // 1B D4 Bispro
+        // 1C D4 Bispro
+        // 1D D4 Bispro
+        // 1E D4 Bispro
+
+        // S2 Pemasaran Inovasi dan Teknologi
+
         $grades = [
-            ['name' => '1A', 'description' => 'Kelas 1A'],
-            ['name' => '1B', 'description' => 'Kelas 1B'],
-            ['name' => '1C', 'description' => 'Kelas 1C'],
-            ['name' => '2A', 'description' => 'Kelas 2A'],
-            ['name' => '2B', 'description' => 'Kelas 2B'],
-            ['name' => '2C', 'description' => 'Kelas 2C'],
-            ['name' => '3A', 'description' => 'Kelas 3A'],
-            ['name' => '3B', 'description' => 'Kelas 3B'],
-            ['name' => '3C', 'description' => 'Kelas 3C'],
+            ['name' => '1A D4 Administrasi Bisnis'],
+            ['name' => '1B D4 Administrasi Bisnis'],
+            ['name' => '1C D4 Administrasi Bisnis'],
+            ['name' => '1D D4 Administrasi Bisnis'],
+            ['name' => '1E D4 Administrasi Bisnis'],
+
+            ['name' => '1A D3 Administrasi Bisnis'],
+            ['name' => '1B D3 Administrasi Bisnis'],
+            ['name' => '1C D3 Administrasi Bisnis'],
+            ['name' => '1D D3 Administrasi Bisnis'],
+            ['name' => '1E D3 Administrasi Bisnis'],
+
+            ['name' => '1A D4 Administrasi Perkantoran Digital'],
+            ['name' => '1B D4 Administrasi Perkantoran Digital'],
+            ['name' => '1C D4 Administrasi Perkantoran Digital'],
+            ['name' => '1D D4 Administrasi Perkantoran Digital'],
+            ['name' => '1E D4 Administrasi Perkantoran Digital'],
+
+            ['name' => '1A D4 Bispro'],
+            ['name' => '1B D4 Bispro'],
+            ['name' => '1C D4 Bispro'],
+            ['name' => '1D D4 Bispro'],
+            ['name' => '1E D4 Bispro'],
+
+            ['name' => 'S2 Pemasaran Inovasi dan Teknologi'],
         ];
 
         foreach ($grades as $grade) {

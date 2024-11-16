@@ -23,17 +23,17 @@ export default function Login() {
     <>
       <Head title="Login" />
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-          <div className="hidden bg-muted lg:block">
+        <div className="flex h-screen">
+          <div className="hidden w-8/12 bg-muted lg:block">
             <img
-              src="/placeholder.svg"
+              src="/bg.jpg"
               alt="placeholder"
               width="1920"
               height="1080"
               className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
-          <div className="flex items-center justify-center py-12">
+          <div className="flex items-center justify-center w-full lg:w-4/12">
             <div className="mx-auto grid w-[350px] gap-6">
               <div className="grid gap-2 text-center">
                 <h1 className="text-3xl font-bold">Masuk</h1>
@@ -49,7 +49,6 @@ export default function Login() {
                       id="email"
                       type="email"
                       placeholder="Masukkan email anda"
-                      required
                       value={data.email}
                       onChange={(e) => setData("email", e.target.value)}
                       tabIndex={0}
@@ -61,15 +60,20 @@ export default function Login() {
                     )}
                   </div>
                   <div className="grid gap-2 mb-4">
+                    <Label htmlFor="email">Password</Label>
                     <Input
                       id="password"
                       type="password"
-                      required
                       placeholder="Masukkan password anda"
                       value={data.password}
                       onChange={(e) => setData("password", e.target.value)}
                       tabIndex={0}
                     />
+                    {errors.password && (
+                      <span className="text-xs text-red-500">
+                        {errors.password}
+                      </span>
+                    )}
                   </div>
                   <Button type="submit" className="w-full" tabIndex={0}>
                     Masuk

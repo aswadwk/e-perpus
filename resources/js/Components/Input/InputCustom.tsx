@@ -32,7 +32,12 @@ export default function InputCustom({
   return (
     <>
       <div className="relative grid items-center w-full max-w-full gap-2.5">
-        {label && <Label htmlFor={id}>{label}</Label>}
+        {label && (
+          <Label htmlFor={id}>
+            {label}
+            <span className="text-xs text-red-500"> * Wajib diisi</span>
+          </Label>
+        )}
         <InputUi
           type={isShowPassword ? "text" : type}
           placeholder={placeholder}

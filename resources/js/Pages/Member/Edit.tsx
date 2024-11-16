@@ -15,6 +15,7 @@ import React from "react";
 const Edit = ({ member, grades }: any) => {
   const { data, setData, put, errors, processing } = useForm({
     nis: member.nis || "",
+    code: member.code || "",
     name: member.name || "",
     username: member.username || "",
     email: member.email || "",
@@ -30,6 +31,7 @@ const Edit = ({ member, grades }: any) => {
       preserveScroll: true,
       onSuccess: () => {
         setData({
+          code: "",
           nis: "",
           name: "",
           username: "",
@@ -53,6 +55,17 @@ const Edit = ({ member, grades }: any) => {
       <CardContent>
         <form action="" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <InputCustom
+                isDisabled
+                label="Kode Anggota"
+                type="text"
+                placeholder="NIM"
+                value={data.code}
+                onChange={(e) => setData("code", e.target.value)}
+                error={errors.code}
+              />
+            </div>
             <div>
               <InputCustom
                 label="NIM"

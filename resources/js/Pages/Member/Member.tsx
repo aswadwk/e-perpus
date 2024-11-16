@@ -85,11 +85,11 @@ const User = ({ members }: any) => {
 
   return (
     <DefaultLayout>
-      <Head title="Members" />
+      <Head title="Anggota" />
 
       <Card>
         <CardHeader>
-          <CardTitle>Pengguna</CardTitle>
+          <CardTitle>Anggota</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex justify-between">
@@ -129,7 +129,7 @@ const User = ({ members }: any) => {
             <Link href="/admin/members/create">
               <Button>
                 <Plus />
-                Tambah Pengguna
+                Tambah Anggota
               </Button>
             </Link>
           </div>

@@ -18,9 +18,18 @@ class CategoryController extends Controller
         ]);
     }
 
+    private function generateCode()
+    {
+        $count = Category::count();
+
+        return 'KT-' . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    }
+
     public function create()
     {
-        return inertia('Category/Create');
+        return inertia('Category/Create', [
+            'code' => $this->generateCode(),
+        ]);
     }
 
     public function store(Request $request)

@@ -33,6 +33,9 @@ export interface Book {
   author: string;
   cover: string;
   genre: string;
+  category?: {
+    name: string;
+  };
 }
 
 export interface Album {

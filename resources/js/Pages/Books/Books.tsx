@@ -8,6 +8,8 @@ import { Head } from "@inertiajs/react";
 import { Button } from "react-day-picker";
 
 const BookPage = ({ books, recommendations }: any) => {
+  console.log(books);
+
   return (
     <BookLayout>
       <Head title="Books" />

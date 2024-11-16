@@ -124,8 +124,8 @@ export default function BookItem({
           )}
         />
         {/* genre */}
-        <div className="absolute top-0 right-0 p-2 text-xs font-semibold text-white bg-primary-500 rounded-bl-md">
-          {book.genre}
+        <div className="absolute top-0 right-0 p-2 text-xs font-semibold text-white bg-slate-400 bg-primary-500 rounded-bl-md">
+          {book?.category?.name}
         </div>
       </div>
 

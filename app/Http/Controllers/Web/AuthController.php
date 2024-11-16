@@ -31,7 +31,7 @@ class AuthController extends Controller
 
             // dd(auth('web')->user()->role);
             // check if user is admin
-            if (auth('web')->user()->role === 'admin') {
+            if (auth('web')->user()->role === 'admin' || auth('web')->user()->role === 'super admin') {
                 return redirect()->intended('/admin/home');
             }
 

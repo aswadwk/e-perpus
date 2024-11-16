@@ -96,7 +96,7 @@ const User = ({ members }: any) => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Pengguna</CardTitle>
+          <CardTitle>Administrator</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex justify-between">
@@ -136,7 +136,7 @@ const User = ({ members }: any) => {
             <Link href="/admin/admins/create">
               <Button>
                 <Plus />
-                Tambah Pengguna
+                Tambah Admin
               </Button>
             </Link>
           </div>

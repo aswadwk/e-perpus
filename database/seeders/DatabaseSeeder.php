@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Grade;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,7 +20,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'member@gmail.com',
                 'password' => bcrypt('password'),
                 'nis' => '1234567890',
-                'code' => 'M001',
+                'code' => 'AB' . str_pad(1, 3, '0', STR_PAD_LEFT),
                 'username' => 'member1',
                 'address' => 'Jl. Member 1',
             ],
@@ -28,13 +29,25 @@ class DatabaseSeeder extends Seeder
                 'email' => 'member2@gmail.com',
                 'password' => bcrypt('password'),
                 'nis' => '1234567891',
-                'code' => 'M002',
+                'code' => 'AB' . str_pad(2, 3, '0', STR_PAD_LEFT),
                 'username' => 'member2',
                 'address' => 'Jl. Member 2',
             ],
         ];
 
+
+
+        $this->call([
+            GradeSeeder::class,
+            PublisherSeeder::class,
+            CategorySeeder::class,
+            BookSeeder::class,
+            UserSeeder::class,
+        ]);
+
         foreach ($users as $user) {
+            $user['grade_id'] = Grade::all()->random()->id;
+
             User::create($user);
         }
 
@@ -50,14 +63,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
             'role' => 'admin',
-        ]);
-
-        $this->call([
-            PublisherSeeder::class,
-            CategorySeeder::class,
-            BookSeeder::class,
-            UserSeeder::class,
-            GradeSeeder::class,
         ]);
     }
 }

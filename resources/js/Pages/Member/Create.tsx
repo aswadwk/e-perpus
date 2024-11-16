@@ -9,11 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/Components/ui/card";
-import { useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = ({ grades }: any) => {
+const Create = ({ grades, code }: any) => {
   const { data, setData, post, errors, processing } = useForm({
+    code: code,
     nis: "",
     name: "",
     grade_id: "",
@@ -30,6 +31,7 @@ const Create = ({ grades }: any) => {
       preserveScroll: true,
       onSuccess: () => {
         setData({
+          code: "",
           nis: "",
           name: "",
           grade_id: "",
@@ -44,8 +46,7 @@ const Create = ({ grades }: any) => {
 
   return (
     <DefaultLayout>
-      {/* <h1 className="mb-4 text-2xl font-semibold">Create Member</h1> */}
-
+      <Head title="Tambah Anggota" />
       <CardHeader>
         <CardTitle>Tambah Pengguna</CardTitle>
         <CardDescription>Tambah pengguna baru</CardDescription>
@@ -55,6 +56,19 @@ const Create = ({ grades }: any) => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <InputCustom
+                label="Kode Anggota"
+                isRequired
+                isDisabled
+                type="text"
+                placeholder="Kode"
+                value={data.code}
+                onChange={(e) => setData("code", e.target.value)}
+                error={errors.code}
+              />
+            </div>
+            <div>
+              <InputCustom
+                isRequired
                 label="NIM"
                 type="text"
                 placeholder="NIM"
@@ -66,6 +80,7 @@ const Create = ({ grades }: any) => {
             <div>
               <InputCustom
                 label="Name"
+                isRequired
                 type="text"
                 placeholder="Name"
                 value={data.name}
@@ -76,6 +91,7 @@ const Create = ({ grades }: any) => {
             <div>
               <SelectInput
                 label="Kelas"
+                isRequired
                 placeholder="Kelas"
                 items={grades.map((grade: any) => ({
                   value: grade.id.toString(),

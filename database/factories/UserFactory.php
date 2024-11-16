@@ -2,15 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Grade;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
+    protected $count = 1;
+
     /**
      * The current password being used by the factory.
      */
@@ -32,15 +36,15 @@ class UserFactory extends Factory
         // 'address' => 'Jl. Member 1',
 
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name'              => fake()->name(),
+            'email'             => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'nis' => fake()->unique()->numerify('##########'),
-            // ARB 001, ARB 002, ARB 003, ...
-            'code' => 'ARB ' . fake()->unique()->numerify('###'),
-            'username' => fake()->userName(),
-            'address' => fake()->address(),
-            'password' => static::$password ??= Hash::make('password'),
+            'nis'               => fake()->unique()->numerify('##########'),
+            'code'           => 'ARB' . str_pad($this->count++, 3, '0', STR_PAD_LEFT),
+            'username'       => fake()->userName(),
+            'grade_id'       => Grade::all()->random()->id,
+            'address'        => fake()->address(),
+            'password'       => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
     }

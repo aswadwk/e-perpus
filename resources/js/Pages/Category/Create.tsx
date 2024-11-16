@@ -8,13 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/Components/ui/card";
-import { useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = () => {
+const Create = ({ code }: any) => {
   const { data, setData, post, errors, processing } = useForm({
     name: "",
-    code: "",
+    code: code,
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -33,7 +33,7 @@ const Create = () => {
 
   return (
     <DefaultLayout>
-      {/* <h1 className="mb-4 text-2xl font-semibold">Create Member</h1> */}
+      <Head title="Tambah Kategori" />
 
       <CardHeader>
         <CardTitle>Tambah Kelas</CardTitle>
@@ -44,22 +44,24 @@ const Create = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <InputCustom
-                label="Nama"
-                type="text"
-                placeholder="Nama"
-                value={data.name}
-                onChange={(e) => setData("name", e.target.value)}
-                error={errors.name}
-              />
-            </div>
-            <div>
-              <InputCustom
+                isDisabled
+                isRequired
                 label="Kode"
                 type="text"
                 placeholder="Kode"
                 value={data.code}
                 onChange={(e) => setData("code", e.target.value)}
                 error={errors.code}
+              />
+            </div>
+            <div>
+              <InputCustom
+                label="Nama"
+                type="text"
+                placeholder="Nama"
+                value={data.name}
+                onChange={(e) => setData("name", e.target.value)}
+                error={errors.name}
               />
             </div>
           </div>
