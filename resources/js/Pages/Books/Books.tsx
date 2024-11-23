@@ -1,6 +1,9 @@
 import AlbumArtwork from "@/Components/Layout/Book";
 import BookLayout from "@/Components/Layout/BookLayout";
 import { useModal } from "@/Components/Login/LoginContext";
+import PaginationDemo, {
+  PaginateInfo,
+} from "@/Components/Paginate/PaginateDemo";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
 import { Separator } from "@/Components/ui/separator";
 import { Tabs, TabsContent } from "@/Components/ui/tabs";
@@ -26,17 +29,26 @@ const BookPage = ({ books, recommendations }: any) => {
           </div>
           <Separator className="my-4" />
           <div className="relative">
-            <div className="grid grid-cols-3 gap-4 pb-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 pb-4 md:grid-cols-3 lg:grid-cols-4">
               {books.data?.map((album: any) => (
                 <AlbumArtwork
                   key={album.name}
                   book={album}
-                  className="w-[250px]"
+                  className="w-[200px] md:w-[250px]"
                   aspectRatio="portrait"
-                  width={250}
-                  height={330}
                 />
               ))}
+            </div>
+
+            <div className="flex flex-col items-center justify-between w-full gap-2 md:flex-row">
+              <PaginateInfo
+                from={books.from}
+                to={books.to}
+                total={books.total}
+              />
+              <div>
+                <PaginationDemo links={books.links} />
+              </div>
             </div>
           </div>
           <div className="mt-6 space-y-1">
@@ -65,22 +77,6 @@ const BookPage = ({ books, recommendations }: any) => {
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
-        </TabsContent>
-        <TabsContent
-          value="podcasts"
-          className="h-full flex-col border-none p-0 data-[state=active]:flex"
-        >
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h2 className="text-2xl font-semibold tracking-tight">
-                New Episodes
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Your favorite podcasts. Updated daily.
-              </p>
-            </div>
-          </div>
-          <Separator className="my-4" />
         </TabsContent>
       </Tabs>
     </BookLayout>

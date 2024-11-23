@@ -18,7 +18,7 @@ class BookController extends Controller
     {
         return inertia('Books/Books', [
             'books' => Book::with(['category', 'publisher'])
-                ->orderBy('id', 'desc')->paginate(10),
+                ->orderBy('id', 'desc')->paginate(15),
             'recommendations' => $this->getRecommendations(auth('web')->user()->id),
         ]);
     }
