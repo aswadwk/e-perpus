@@ -251,7 +251,7 @@ class BookController extends Controller
         }
     }
 
-    public function getRecommendations($userId, $topN = 10)
+    public function getRecommendations($userId, $topN = 5)
     {
         // Step 1: Collaborative Filtering
         $borrowedBookIds = Borrow::where('user_id', $userId)

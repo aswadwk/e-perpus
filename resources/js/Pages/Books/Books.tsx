@@ -20,10 +20,9 @@ const BookPage = ({ books, recommendations }: any) => {
         <TabsContent value="music" className="p-0 border-none outline-none">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h2 className="text-2xl font-semibold tracking-tight">Books</h2>
+              <h2 className="text-2xl font-semibold tracking-tight">Buku</h2>
               <p className="text-sm text-muted-foreground">
-                Improve your reading literacy today with our free reading
-                resources.
+                Tingkatkan literasi Anda dengan membaca buku.
               </p>
             </div>
           </div>
@@ -53,10 +52,10 @@ const BookPage = ({ books, recommendations }: any) => {
           </div>
           <div className="mt-6 space-y-1">
             <h2 className="text-2xl font-semibold tracking-tight">
-              Made for You
+              Rekomendasi Buku
             </h2>
             <p className="text-sm text-muted-foreground">
-              Get better recommendations the more you read.
+              Rekomendasi buku yang mungkin Anda sukai.
             </p>
           </div>
           <Separator className="my-4" />

@@ -49,7 +49,7 @@ export const Dashboard = ({ summaries }: any) => {
           <h1 className="text-2xl font-extrabold tracking-tight scroll-m-20 lg:text-5xl">
             Ruang Baca Jurusan Administrasi Niaga
           </h1>
-          <p>Politeknik Negeri Ujunga Pandang</p>
+          <p>Politeknik Negeri Ujung Pandang</p>
         </div>
       </div>
     </DefaultLayout>
