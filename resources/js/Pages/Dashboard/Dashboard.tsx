@@ -46,10 +46,11 @@ export const Dashboard = ({ summaries }: any) => {
       <div className="flex flex-col items-center justify-center gap-2 mt-10">
         <img width="100" src="/logo.png" alt="" />
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight scroll-m-20 lg:text-5xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-center scroll-m-20 lg:text-5xl">
             Ruang Baca Jurusan Administrasi Niaga
+            <br />
+            Politeknik Negeri Ujung Pandang
           </h1>
-          <p>Politeknik Negeri Ujung Pandang</p>
         </div>
       </div>
     </DefaultLayout>
