@@ -113,15 +113,6 @@ class BookController extends Controller
                 ]);
             }
 
-            // check if name already exists
-            $title = Book::where('title', $request->title)->exists();
-
-            if ($title) {
-                throw ValidationException::withMessages([
-                    'title' => 'Title already exists',
-                ]);
-            }
-
             if ($request->hasFile('cover')) {
                 // upload image
                 $coverPath = $request->file('cover')->store('public/books');
@@ -191,15 +182,6 @@ class BookController extends Controller
             if ($isbn) {
                 throw ValidationException::withMessages([
                     'isbn' => 'ISBN already exists',
-                ]);
-            }
-
-            // check if name already exists
-            $title = Book::where('title', $request->title)->where('id', '!=', $id)->exists();
-
-            if ($title) {
-                throw ValidationException::withMessages([
-                    'title' => 'Title already exists',
                 ]);
             }
 

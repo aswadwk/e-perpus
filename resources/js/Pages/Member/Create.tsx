@@ -58,7 +58,6 @@ const Create = ({ grades, code }: any) => {
               <InputCustom
                 label="Kode Anggota"
                 isRequired
-                isDisabled
                 type="text"
                 placeholder="Kode"
                 value={data.code}
