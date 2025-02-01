@@ -22,6 +22,12 @@ class HistoryController extends Controller
     {
         return inertia('Histories/AdminHistory', [
             'histories' => Borrow::with(['book', 'user'])
+                ->when(isset($request->search), function ($query) use ($request) {
+                    $query->whereHas('user', function ($query) use ($request) {
+                        $query->where('name', 'like', '%' . $request->search . '%')
+                            ->orWhere('email', 'like', '%' . $request->search . '%');
+                    });
+                })
                 ->orderBy('created_at', 'desc')->paginate(10),
         ]);
     }

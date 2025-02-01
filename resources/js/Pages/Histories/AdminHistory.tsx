@@ -95,7 +95,6 @@ const AdminHistories = ({ histories }: any) => {
     start_date: "",
     end_date: "",
     search: "",
-    subscription: "",
     with_trashed: false,
   });
 
@@ -121,13 +120,13 @@ const AdminHistories = ({ histories }: any) => {
         end_date: toYearMonthDay(searchFilter.end_date, ""),
       });
 
-      // router.get(
-      //   route("v1.admin.users"),
-      //   {
-      //     ...newFilter,
-      //   },
-      //   { preserveState: true, preserveScroll: "errors" }
-      // );
+      router.get(
+        route("web.histories.admin"),
+        {
+          ...newFilter,
+        },
+        { preserveState: true, preserveScroll: "errors" }
+      );
     }, 500)
   ).current;
 
@@ -141,13 +140,7 @@ const AdminHistories = ({ histories }: any) => {
   }, [filters]);
 
   function hasFilter() {
-    return (
-      filters.search ||
-      filters.start_date ||
-      filters.end_date ||
-      filters.subscription ||
-      filters.with_trashed
-    );
+    return filters.search || filters.with_trashed;
   }
 
   function deletePublisher(id: any) {
@@ -205,6 +198,36 @@ const AdminHistories = ({ histories }: any) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="flex justify-end mb-2">
+            <div className="flex items-center justify-end space-x-2">
+              {hasFilter() && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setFilters({
+                      ...filters,
+                      search: "",
+                      per_page: "",
+                      with_trashed: false,
+                    });
+                  }}
+                >
+                  Clear Filter
+                </Button>
+              )}
+              <Input
+                placeholder="Search nama peminjam..."
+                onChange={(e) => {
+                  setFilters({
+                    ...filters,
+                    search: e.target.value,
+                  });
+                }}
+                className="w-[150px] lg:w-[250px]"
+                value={filters.search}
+              />
+            </div>
+          </div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -259,6 +282,18 @@ const AdminHistories = ({ histories }: any) => {
             </TableBody>
           </Table>
         </CardContent>
+        <CardFooter>
+          <div className="flex items-center justify-between w-full">
+            <PaginateInfo
+              from={histories.from}
+              to={histories.to}
+              total={histories.total}
+            />
+            <div>
+              <PaginationDemo links={histories.links} />
+            </div>
+          </div>
+        </CardFooter>
       </Card>
     </DefaultLayout>
   );
