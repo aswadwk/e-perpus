@@ -11,7 +11,10 @@ import { removeEmptyValues } from "@/Shared/utils";
 import { Head, router } from "@inertiajs/react";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Button } from "react-day-picker";
+import { Search } from "lucide-react";
+import BookItem from "@/Components/Layout/Book";
 
 const BookPage = ({ books, recommendations }: any) => {
   console.log(books);
@@ -53,14 +56,14 @@ const BookPage = ({ books, recommendations }: any) => {
       <Head title="Books" />
       <Tabs defaultValue="music" className="h-full space-y-6">
         <TabsContent value="music" className="p-0 border-none outline-none">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="space-y-1 text-center md:text-left">
               <h2 className="text-2xl font-semibold tracking-tight">Buku</h2>
               <p className="text-sm text-muted-foreground">
                 Tingkatkan literasi Anda dengan membaca buku.
               </p>
             </div>
-            <div>
+            <div className="relative mt-4 md:mt-0 w-full md:w-auto">
               <Input
                 placeholder="Search "
                 onChange={(e) => {
@@ -69,21 +72,25 @@ const BookPage = ({ books, recommendations }: any) => {
                     search: e.target.value,
                   });
                 }}
-                className="w-[150px] lg:w-[250px]"
+                className="w-full md:w-[250px] pl-10"
                 value={filters.search}
               />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
           <Separator className="my-4" />
           <div className="relative">
-            <div className="grid grid-cols-2 gap-2 pb-4 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 pb-4 sm:grid-cols-3 lg:grid-cols-4">
               {books.data?.map((album: any) => (
-                <AlbumArtwork
-                  key={album.name}
-                  book={album}
-                  className="w-[200px] md:w-[250px]"
-                  aspectRatio="portrait"
-                />
+                <Card key={album.name} className="w-full">
+                  <CardContent>
+                    <BookItem
+                      book={album}
+                      className="w-full transition-transform transform hover:scale-105"
+                      aspectRatio="portrait"
+                    />
+                  </CardContent>
+                </Card>
               ))}
             </div>
 
@@ -98,7 +105,7 @@ const BookPage = ({ books, recommendations }: any) => {
               </div>
             </div>
           </div>
-          <div className="mt-6 space-y-1">
+          <div className="mt-6 space-y-1 text-center md:text-left">
             <h2 className="text-2xl font-semibold tracking-tight">
               Rekomendasi Buku
             </h2>
@@ -107,14 +114,14 @@ const BookPage = ({ books, recommendations }: any) => {
             </p>
           </div>
           <Separator className="my-4" />
-          <div className="relative">
+          <div className="relative bg-gray-50 p-4 rounded-md">
             <ScrollArea>
-              <div className="flex pb-4 space-x-4">
+              <div className="flex pb-4 space-x-4 overflow-x-auto">
                 {recommendations?.map((album: any) => (
                   <AlbumArtwork
                     key={album.name}
                     book={album}
-                    className="w-[150px]"
+                    className="w-[150px] flex-shrink-0 transition-transform transform hover:scale-105"
                     aspectRatio="portrait"
                     width={150}
                     height={300}

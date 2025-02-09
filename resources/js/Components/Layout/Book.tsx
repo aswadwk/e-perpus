@@ -1,19 +1,5 @@
-// import Image from "next/image";
-// import { PlusCircledIcon } from "@radix-ui/react-icons";
-
 import { cn } from "@/Lib/utils";
-import { Album, Book } from "./BookLayout";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuSub,
-  ContextMenuSubContent,
-  ContextMenuSubTrigger,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { Book } from "./BookLayout";
 import { useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { toast } from "sonner";
@@ -96,7 +82,7 @@ export default function BookItem({
             borrowBook: false,
           });
         }}
-        width="w-[600px] sm:w-[840px]"
+        width="w-full sm:w-[800px]"
         title="Borrow Book"
         description="Fill in the form below to borrow a book"
       >
@@ -119,7 +105,7 @@ export default function BookItem({
           width={width}
           height={height}
           className={cn(
-            "h-auto w-auto object-cover transition-all hover:scale-105",
+            "h-auto w-full object-cover transition-all hover:scale-105",
             aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
           )}
         />

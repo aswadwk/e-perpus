@@ -1,1 +1,0 @@
-import{j as r}from"./app-DtGj8Yhc.js";import{B as s}from"./button-BuHZq0cU.js";function o(){return r.jsxs("div",{className:"w-full min-h-screen bg-red-600",children:["Dashboard",r.jsx(s,{children:"Click me"})]})}export{o as default};
