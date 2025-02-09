@@ -1,17 +1,52 @@
 import AlbumArtwork from "@/Components/Layout/Book";
 import BookLayout from "@/Components/Layout/BookLayout";
-import { useModal } from "@/Components/Login/LoginContext";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
+import { Input } from "@/Components/ui/input";
 import { ScrollArea, ScrollBar } from "@/Components/ui/scroll-area";
 import { Separator } from "@/Components/ui/separator";
 import { Tabs, TabsContent } from "@/Components/ui/tabs";
-import { Head } from "@inertiajs/react";
+import { removeEmptyValues } from "@/Shared/utils";
+import { Head, router } from "@inertiajs/react";
+import { debounce } from "lodash";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "react-day-picker";
 
 const BookPage = ({ books, recommendations }: any) => {
   console.log(books);
+  const [filters, setFilters] = useState<any>({
+    per_page: 10,
+    search: "",
+    with_trashed: false,
+  });
+
+  const firstRender = useRef(true);
+
+  const debouncedSearch = useRef(
+    debounce((searchFilter: any) => {
+      let newFilter = removeEmptyValues({
+        ...searchFilter,
+      });
+
+      router.get(
+        route("web.books.index"),
+        {
+          ...newFilter,
+        },
+        { preserveState: true, preserveScroll: "errors" }
+      );
+    }, 500)
+  ).current;
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    debouncedSearch(filters);
+  }, [filters]);
 
   return (
     <BookLayout>
@@ -24,6 +59,19 @@ const BookPage = ({ books, recommendations }: any) => {
               <p className="text-sm text-muted-foreground">
                 Tingkatkan literasi Anda dengan membaca buku.
               </p>
+            </div>
+            <div>
+              <Input
+                placeholder="Search "
+                onChange={(e) => {
+                  setFilters({
+                    ...filters,
+                    search: e.target.value,
+                  });
+                }}
+                className="w-[150px] lg:w-[250px]"
+                value={filters.search}
+              />
             </div>
           </div>
           <Separator className="my-4" />

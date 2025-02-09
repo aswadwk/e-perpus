@@ -14,11 +14,17 @@ use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Books/Books', [
             'books' => Book::with(['category', 'publisher'])
-                ->orderBy('id', 'desc')->paginate(15),
+                ->when(isset($request->search), function ($query) use ($request) {
+                    $query->where('title', 'like', "%$request->search%")
+                        ->orWhere('author', 'like', "%$request->search%")
+                        ->orWhere('isbn', 'like', "%$request->search%");
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(15),
             'recommendations' => $this->getRecommendations(auth('web')->user()->id),
         ]);
     }
