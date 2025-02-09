@@ -1,9 +1,3 @@
-import AvatarCustom from "@/Components/Avatar/Avatar";
-import DatePickerDemo from "@/Components/DatePicker/DatePicker";
-import DatePickerWithRange from "@/Components/DatePicker/DateRangePicker";
-import InputCheckBox from "@/Components/Input/InputCheckBox";
-import InputCustom from "@/Components/Input/InputCustom";
-import BookLayout from "@/Components/Layout/BookLayout";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
@@ -12,7 +6,6 @@ import SelectInput from "@/Components/SelectInput/SelectInput";
 import SheetDemo from "@/Components/Sheet/Sheet";
 import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
-import { Calendar } from "@/Components/ui/calendar";
 import {
   Card,
   CardContent,
@@ -29,19 +22,6 @@ import {
   CommandList,
 } from "@/Components/ui/command";
 import { Input } from "@/Components/ui/input";
-import { Label } from "@/Components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/Components/ui/popover";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/Components/ui/sheet";
 import {
   Table,
   TableBody,
@@ -50,27 +30,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { cn } from "@/Lib/utils";
 import {
   dateHumanize,
   removeEmptyValues,
   toYearMonthDay,
   toYearMonthDayHourMinute,
 } from "@/Shared/utils";
-import { Head, Link, router, useForm } from "@inertiajs/react";
-import axios from "axios";
+import { Head, router, useForm } from "@inertiajs/react";
 import { CommandEmpty } from "cmdk";
-import { format } from "date-fns";
 import { debounce } from "lodash";
-import {
-  CalendarIcon,
-  DollarSignIcon,
-  Edit,
-  Eye,
-  Plus,
-  Trash,
-} from "lucide-react";
+import { Edit } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -150,8 +119,6 @@ const AdminHistories = ({ histories }: any) => {
   }
 
   async function handleBorrowBook() {
-    console.log(formUpdateStatus.data);
-
     formUpdateStatus.post(
       route("web.histories.update", formUpdateStatus.data.id),
       {

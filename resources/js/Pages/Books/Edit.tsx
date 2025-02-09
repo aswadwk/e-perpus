@@ -1,7 +1,6 @@
 import InputCustom from "@/Components/Input/InputCustom";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import SelectInput from "@/Components/SelectInput/SelectInput";
-// import SelectInput from "@/Components/SelectInput/SelectInput";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -40,9 +39,6 @@ const Edit = ({ book, categories, publishers }: any) => {
       },
     });
   }
-
-  console.log(categories);
-  console.log(data);
 
   return (
     <DefaultLayout>

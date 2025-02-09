@@ -1,11 +1,7 @@
-import AvatarCustom from "@/Components/Avatar/Avatar";
-import DatePickerWithRange from "@/Components/DatePicker/DateRangePicker";
-import InputCheckBox from "@/Components/Input/InputCheckBox";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
-import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
 import {
   Card,
@@ -23,19 +19,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table";
-import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
 import {
   dateHumanize,
   removeEmptyValues,
-  toYearMonthDay,
   toYearMonthDayHourMinute,
 } from "@/Shared/utils";
 import { Head, Link, router, useForm } from "@inertiajs/react";
-import axios from "axios";
 import { debounce } from "lodash";
-import { DollarSignIcon, Edit, Eye, Plus, Trash } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 
 const Grade = ({ grades }: any) => {
   const [filters, setFilters] = useState<any>({
@@ -53,8 +45,6 @@ const Grade = ({ grades }: any) => {
       let newFilter = removeEmptyValues({
         ...searchFilter,
       });
-
-      console.log(newFilter);
 
       router.get(
         route("web.grades.index"),

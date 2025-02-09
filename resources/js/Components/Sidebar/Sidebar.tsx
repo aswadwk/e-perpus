@@ -6,9 +6,6 @@ import {
   House,
   PanelLeftOpen,
   PanelRightOpen,
-  ScanBarcode,
-  ScanIcon,
-  ShoppingCart,
   Users,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
@@ -29,8 +26,6 @@ export default function Sidebar({
   setSidebarExpanded,
 }: Readonly<SidebarProps>) {
   const { url, props }: any = usePage();
-
-  console.log(props?.auth?.role);
 
   const isActive = (path: string) => {
     return url.replace("/admin", "").startsWith(path.replace("/admin", ""));

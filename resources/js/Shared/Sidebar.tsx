@@ -1,41 +1,12 @@
-import {
-  BadgeCheck,
-  Bell,
-  ChevronRight,
-  ChevronsUpDown,
-  CreditCard,
-  Database,
-  Frame,
-  GalleryVerticalEnd,
-  Home,
-  LogOut,
-  Map,
-  MoreHorizontal,
-  PieChart,
-  Settings2,
-  Sparkles,
-  SquareTerminal,
-} from "lucide-react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { ChevronRight, Database, Home } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/Components/ui/collapsible";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
-import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -110,9 +81,6 @@ const data = {
 
 const AppSidebar = () => {
   const { post } = useForm({});
-  const { props }: any = usePage();
-
-  console.log(props?.auth);
 
   const signOut = () => {
     post(route("web.auth.logout"));

@@ -150,20 +150,6 @@ export const playlists = [
 ];
 
 function FormAddAdminUser({ onSubmit, form }: any) {
-  console.log("form");
-  console.log(form);
-
-  // const [forms, setForms] = useState({
-  //   date: new Date(),
-  //   fine: true,
-  //   notes: "",
-  // });
-
-  // const handleBorrowBook = async (e: any) => {
-  //   e.preventDefault();
-  //   onSubmit(forms);
-  // };
-
   return (
     <div>
       <Card className="mt-4 border-none">

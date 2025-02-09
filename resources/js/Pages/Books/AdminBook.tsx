@@ -1,15 +1,12 @@
 import DatePickerDemo from "@/Components/DatePicker/DatePicker";
 import InputCheckBox from "@/Components/Input/InputCheckBox";
 import InputCustom from "@/Components/Input/InputCustom";
-import BookLayout from "@/Components/Layout/BookLayout";
 import DefaultLayout from "@/Components/Layout/DefaultLayout";
 import PaginationDemo, {
   PaginateInfo,
 } from "@/Components/Paginate/PaginateDemo";
 import SheetDemo from "@/Components/Sheet/Sheet";
-import Status from "@/Components/Status";
 import { Button } from "@/Components/ui/button";
-import { Calendar } from "@/Components/ui/calendar";
 import {
   Card,
   CardContent,
@@ -19,18 +16,8 @@ import {
 } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/Components/ui/popover";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/Components/ui/sheet";
+
+import { Sheet, SheetContent } from "@/Components/ui/sheet";
 import {
   Table,
   TableBody,
@@ -40,7 +27,7 @@ import {
   TableRow,
 } from "@/Components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs";
-import { cn, imagePath } from "@/Lib/utils";
+import { imagePath } from "@/Lib/utils";
 import {
   dateHumanize,
   removeEmptyValues,
@@ -48,17 +35,8 @@ import {
   toYearMonthDayHourMinute,
 } from "@/Shared/utils";
 import { Head, Link, router, useForm } from "@inertiajs/react";
-import axios from "axios";
-import { format } from "date-fns";
 import { debounce } from "lodash";
-import {
-  CalendarIcon,
-  DollarSignIcon,
-  Edit,
-  Eye,
-  Plus,
-  Trash,
-} from "lucide-react";
+import { Edit, Eye, Plus, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -337,20 +315,6 @@ function BorrowBook({
 }
 
 function FormAddAdminUser({ onSubmit, form }: any) {
-  console.log("form");
-  console.log(form);
-
-  // const [forms, setForms] = useState({
-  //   date: new Date(),
-  //   fine: true,
-  //   notes: "",
-  // });
-
-  // const handleBorrowBook = async (e: any) => {
-  //   e.preventDefault();
-  //   onSubmit(forms);
-  // };
-
   return (
     <div>
       <Card className="mt-4 border-none">

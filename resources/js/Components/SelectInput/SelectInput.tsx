@@ -64,7 +64,6 @@ export default function SelectInput({
   currentValue,
   isRequired,
 }: Readonly<SelectInputProps>) {
-  console.log("currentValue", currentValue);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(currentValue || "");
 

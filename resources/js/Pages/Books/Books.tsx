@@ -11,13 +11,11 @@ import { removeEmptyValues } from "@/Shared/utils";
 import { Head, router } from "@inertiajs/react";
 import { debounce } from "lodash";
 import { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Button } from "react-day-picker";
+import { Card, CardContent } from "@/Components/ui/card";
 import { Search } from "lucide-react";
 import BookItem from "@/Components/Layout/Book";
 
 const BookPage = ({ books, recommendations }: any) => {
-  console.log(books);
   const [filters, setFilters] = useState<any>({
     per_page: 10,
     search: "",

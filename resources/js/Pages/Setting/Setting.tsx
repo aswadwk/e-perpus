@@ -24,8 +24,6 @@ const Setting = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(data);
-
     postForm(route("web.auth.update"), {
       forceFormData: true,
       preserveScroll: true,
